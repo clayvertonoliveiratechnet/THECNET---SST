@@ -48,5 +48,13 @@
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "TECHNET SST",
+        "supportEmail": "clayvertonoliveira@gmail.com"
+      }
+    }
   }
 }

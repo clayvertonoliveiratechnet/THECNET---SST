@@ -1,39 +1,45 @@
 # TECHNET SST
 
-Painel web de Segurança e Saúde do Trabalho para operações de telecomunicações da TECHNET.
+Dashboard web de Segurança e Saúde do Trabalho da TECHNET para operações de telecomunicações.
 
-## Módulos
-- Indicadores de incidentes e inspeções;
-- Cadastros de incidentes, inspeções, EPIs, treinamentos, ações corretivas e colaboradores;
-- Busca, filtros, criação, edição e exclusão de registros;
-- Exportações em CSV e JSON;
-- Layout responsivo com modo claro e escuro;
-- Demonstração fictícia para uso sem autenticação;
-- Persistência no Firebase Authentication (Google) e Cloud Firestore;
-- Regras de acesso baseadas em perfis.
+## Recursos
 
-## Infraestrutura
-- Projeto: technet-sst-2026
-- Hospedagem: https://technet-sst-2026.web.app
-- App web: 1:276807543932:web:adca9a2ab35b8644e22df9
+- Dashboard com indicadores e gráficos de inspeções, ocorrências e pendências;
+- Cadastro, edição, exclusão, busca e filtros de incidentes, inspeções, EPIs, treinamentos, ações corretivas e colaboradores;
+- Exportação CSV de cada módulo e backup JSON;
+- Interface responsiva com temas claro/escuro;
+- Demonstração com dados estritamente fictícios no navegador;
+- Firebase Authentication com login pelo Google;
+- Cloud Firestore com permissões por perfil e proteção de leitura e escrita.
+
+## Ambiente implantado
+
+- Firebase: technet-sst-2026
+- Site: https://technet-sst-2026.web.app
 - Repositório: https://github.com/clayvertonoliveiratechnet/THECNET---SST
+- Firebase Hosting: ativo, limitado à pasta public
+- Cloud Firestore (default): ativo na região southamerica-east1
+- Authentication Google: habilitado
+- Regras Firestore: implantadas
 
-## Configuração inicial
+## Controles de acesso
 
-1. Ative a API Cloud Firestore e crie o banco (default) na região southamerica-east1.
-2. Publique as regras: firebase deploy --only firestore --project technet-sst-2026
-3. Em Firebase Console > Authentication > Sign-in method, habilite Google e configure o email de suporte.
-4. Confira o domínio technet-sst-2026.web.app em Authentication > Settings > Authorized domains.
-5. A conta administradora inicial definida nas regras é clayvertonoliveira@gmail.com.
+A conta administradora inicial definida em firestore.rules é clayvertonoliveira@gmail.com. Outras contas somente terão acesso ao banco se forem cadastradas por essa conta na coleção usuarios, em documento cujo ID é o UID da conta Firebase, contendo:
 
-Outros usuários são incluídos pela conta administradora na coleção usuarios:
-documento ID = UID do Firebase Authentication;
-campos: ativo=true e perfil=sst, supervisor ou leitura.
+- ativo: true
+- perfil: supervisor, sst ou leitura
 
-## Implantação
-Site estático, sem dependências de instalação nem compilação.
+Apenas a conta inicial pode cadastrar ou editar permissões de usuários. Um supervisor ou SST pode criar, editar e excluir registros; leitura só visualiza dados.
+
+## Publicação
+
 Na raiz do repositório:
-firebase deploy --only hosting --project technet-sst-2026
+firebase deploy --project technet-sst-2026
 
-## Segurança
-O modo de demonstração armazena apenas dados fictícios no localStorage. Não insira dados pessoais reais nesse modo. Somente o modo conectado ao Firebase efetua operações de produção. Antes da adoção operacional, revise acesso, retenção e backup de dados conforme LGPD e políticas internas.
+O site é estático e não exige instalação de pacotes, mas importa os módulos oficiais do Firebase e as fontes pela internet. Para testes, abra a URL do Hosting e clique em Conectar para entrar com o Google.
+
+## Limitações e proteção de dados
+
+O login interativo Google e as operações de escrita de usuários reais exigem testes operacionais. O modo demonstração NÃO envia registros ao Firestore. Nunca insira dados pessoais reais nesse modo.
+
+O sistema é uma ferramenta de controle interno e não substitui a documentação legal obrigatória de SST. Defina uma política de retenção, verificação de documentação e backup antes da entrada em produção com dados de trabalhadores.
