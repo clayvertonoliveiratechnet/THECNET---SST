@@ -7,7 +7,7 @@
   <meta name="description" content="TECHNET SST — Gestão de Segurança e Saúde do Trabalho para equipes de telecomunicações"/>
   <title>TECHNET SST | Gestão de Segurança</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
-  <link rel="stylesheet" href="styles.css?v=20261023-prod"/>
+  <link rel="stylesheet" href="styles.css?v=20261023-users"/>
 </head>
 <body>
   <section id="auth-gate" class="auth-gate" aria-live="polite">
@@ -45,6 +45,8 @@
         <div class="nav-caption secondary-caption">EQUIPE E ANÁLISE</div>
         <a class="nav-link" data-route="colaboradores" href="#colaboradores"><span data-icon="users"></span>Colaboradores</a>
         <a class="nav-link" data-route="relatorios" href="#relatorios"><span data-icon="chart-column"></span>Relatórios</a>
+        <div class="nav-caption secondary-caption" id="nav-user-heading" hidden>ADMINISTRAÇÃO</div>
+        <a class="nav-link" data-route="usuarios" id="nav-user-admin" href="#usuarios" hidden><span data-icon="users"></span>Gestão de usuários</a>
       </nav>
       <div class="sidebar-bottom">
         <div class="safety-tip"><span class="tip-icon" data-icon="shield-check"></span><strong>Segurança em primeiro lugar</strong><p>Registre ocorrências e acompanhe ações preventivas em um só lugar.</p></div>
@@ -64,6 +66,6 @@
   <dialog id="record-dialog" class="dialog"><form id="record-form" method="dialog"><div class="dialog-head"><div><span class="eyebrow">TECHNET SST</span><h2 id="dialog-title">Novo registro</h2></div><button type="button" class="icon-button" id="dialog-close" aria-label="Fechar"><span data-icon="x"></span></button></div><div id="form-fields" class="form-fields"></div><div class="dialog-footer"><button type="button" class="btn btn-muted" id="dialog-cancel">Cancelar</button><button type="submit" class="btn btn-primary" id="save-record"><span data-icon="save"></span>Salvar registro</button></div></form></dialog>
   <dialog id="auth-dialog" class="dialog auth-dialog"><div class="dialog-head"><div><span class="eyebrow">CONECTAR AO FIREBASE</span><h2>Acesso à TECHNET SST</h2></div><button type="button" class="icon-button" id="auth-close"><span data-icon="x"></span></button></div><p class="muted">Entre com uma conta autorizada para visualizar e atualizar os registros da equipe no Firebase.</p><button type="button" class="btn btn-google full" id="google-login"><span data-icon="log-in"></span>Entrar com Google</button><p class="auth-note" id="auth-message">Somente contas autorizadas podem acessar os dados do sistema.</p><button type="button" class="btn btn-muted full" id="signout" hidden>Sair da conta</button></dialog>
   <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
-  <script type="module" src="app.js?v=20261023-prod"></script>
+  <script type="module" src="app.js?v=20261023-users"></script>
 </body>
 </html>

@@ -67,3 +67,14 @@ O sistema é uma ferramenta de controle interno e não substitui a documentaçã
 - Os onze registros reais de PGR (9 versões e 2 controles) já estão no Firestore, vinculados ao Drive.
 - A conta proprietária definida nas regras é clayvertonoliveira@gmail.com; demais contas precisam ser aprovadas na coleção usuarios.
 - O upload binário ainda depende do bucket Cloud Storage (Blaze). Links do Google Drive estão suportados.
+
+## Gestão de usuários
+
+- Administração > Gestão de usuários aparece somente para contas com perfil admin.
+- O administrador cadastra e-mail Google, nome, perfil (admin, supervisor, sst, leitura), status ativo/bloqueado e vínculo opcional com colaboradores.
+- Ao criar colaborador, o registro de pessoal e a autorização são gravados juntos em um batch do Firestore.
+- A coleção convites usa e-mail em minúsculas como ID. A coleção usuarios (ID UID) permanece compatível com as contas antigas.
+- Usuários entram com o Google associado ao e-mail autorizado. O sistema não envia e-mail automaticamente nem cria senhas.
+- Bloqueio impede novas leituras e escritas nas regras do Firestore; não desfaz downloads já realizados.
+- A conta proprietária clayvertonoliveira@gmail.com mantém acesso de superadministrador.
+- A autorização é validada no banco, não somente pela visibilidade do menu.

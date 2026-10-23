@@ -2,31 +2,63 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn() {
-      return request.auth != null && request.auth.token.email_verified == true;
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email is string;
     }
-    function admin() {
+    function owner() {
       return signedIn() && request.auth.token.email == 'clayvertonoliveira@gmail.com';
     }
+    function hasLegacyProfile() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid));
+    }
+    function hasInvitation() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/convites/$(request.auth.token.email));
+    }
+    function activeMember() {
+      return hasLegacyProfile()
+        ? get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.ativo == true
+        : (hasInvitation()
+          && get(/databases/$(database)/documents/convites/$(request.auth.token.email)).data.ativo == true);
+    }
     function member() {
-      return signedIn() && (
-        admin() ||
-        (exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
-          && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.ativo == true)
-      );
+      return signedIn() && (owner() || activeMember());
+    }
+    function memberRole() {
+      return hasLegacyProfile()
+        ? get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.perfil
+        : get(/databases/$(database)/documents/convites/$(request.auth.token.email)).data.perfil;
+    }
+    function admin() {
+      return signedIn() && (owner() || (member() && memberRole() == 'admin'));
     }
     function manager() {
-      return signedIn() && (admin() || (
-        member() &&
-        get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.perfil in ['admin','supervisor','sst']
-      ));
+      return member() && (owner() || memberRole() in ['admin', 'supervisor', 'sst']);
+    }
+    function validInvitation(email) {
+      return request.resource.data.keys().hasAll(['email','perfil','ativo','criadoEm'])
+        && request.resource.data.email == email
+        && request.resource.data.perfil in ['admin','supervisor','sst','leitura']
+        && request.resource.data.ativo is bool
+        && request.resource.data.email is string;
     }
     match /usuarios/{uid} {
-      allow read: if admin() || (signedIn() && request.auth.uid == uid);
+      allow get: if admin() || (signedIn() && request.auth.uid == uid);
+      allow list: if admin();
       allow create, update, delete: if admin();
+    }
+    match /convites/{email} {
+      allow get: if admin() || (signedIn() && request.auth.token.email == email);
+      allow list: if admin();
+      allow create, update: if admin() && validInvitation(email);
+      allow delete: if admin();
     }
     match /{collection}/{docId} {
       allow read: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst'] && member();
-      allow create: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst'] && manager() && request.resource.data.keys().hasAll(['titulo', 'criadoEm']);
+      allow create: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst']
+        && manager() && request.resource.data.keys().hasAll(['titulo', 'criadoEm']);
       allow update, delete: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst'] && manager();
     }
   }
