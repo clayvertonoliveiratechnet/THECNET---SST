@@ -3,35 +3,47 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#17212B"/>
+  <meta name="theme-color" content="#16212C"/>
   <meta name="description" content="TECHNET SST — Gestão de Segurança e Saúde do Trabalho para equipes de telecomunicações"/>
   <title>SST TECHNET | Gestão de Segurança</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
   <link rel="stylesheet" href="styles.css?v=20261023-pgr-corpo"/>
-  <link rel="stylesheet" href="brand.css?v=20261023-orbita"/>
+  <link rel="stylesheet" href="brand.css?v=20261023-v2"/>
 </head>
 <body>
   <section id="auth-gate" class="auth-gate" aria-live="polite">
-    <div class="gate-card">
-      <div class="gate-brand"><img class="gate-brand-icon" src="brand/app-icon.svg" alt="" aria-hidden="true"/><span class="gate-brand-copy"><strong>SST <b>TECHNET</b></strong><small>SAÚDE E SEGURANÇA DO TRABALHO</small></span></div>
-      <div class="gate-indicator"><span></span> AMBIENTE DE PRODUÇÃO</div>
-      <h1>Segurança em cada camada.</h1>
-      <p class="gate-description">Gestão de SST para equipes de telecomunicações. Acesse seus registros, programas, inspeções e evidências com a conta autorizada.</p>
+    <div class="gate-layout">
+      <div class="gate-story" aria-hidden="true">
+        <div class="gate-story-top"><span class="gate-story-kicker"></span> PLATAFORMA TECHNET SST</div>
+        <div class="gate-story-body">
+          <img class="gate-orbit-art" src="brand/orbita.svg" alt=""/>
+          <div class="gate-story-eyebrow">PREVENÇÃO · CONTROLE · TECNOLOGIA</div>
+          <div class="gate-story-title">Segurança que<br/>acompanha cada<br/><em>operação.</em></div>
+          <p>Uma visão integrada de riscos, pessoas e processos — da prevenção à tomada de decisão.</p>
+        </div>
+        <div class="gate-story-footer"><span>01 / PROTEÇÃO</span><span>02 / MONITORAMENTO</span><span>03 / CONFIANÇA</span></div>
+      </div>
+      <div class="gate-card">
+      <div class="gate-brand"><img class="gate-brand-logo" src="brand/logo-horizontal.svg" alt="SST TECHNET — Saúde e Segurança do Trabalho"/></div>
+      <div class="gate-indicator"><span></span> PLATAFORMA DE GESTÃO SST</div>
+      <h1>Bem-vindo ao<br/><span>SST TECHNET.</span></h1>
+      <p class="gate-description">Sua central de saúde e segurança do trabalho. Entre com sua conta autorizada para acessar o ambiente de gestão.</p>
       <div id="gate-status" class="gate-status" role="status">Verificando sua sessão...</div>
       <button type="button" class="btn gate-signin" id="gate-google-login" hidden>Entrar com Google →</button>
       <button type="button" class="btn gate-signin" id="gate-retry" hidden>Tentar carregar novamente</button>
       <button type="button" class="btn btn-muted gate-switch" id="gate-switch" hidden>Trocar conta Google</button>
-      <div class="gate-footnote">Acesso restrito · Firebase Authentication · TECHNET</div>
+      <div class="gate-footnote"><span aria-hidden="true">●</span> Acesso seguro · Conta autorizada · Firebase</div>
+      </div>
     </div>
-    <div class="gate-bottom">SST · TECHNET — Segurança e Saúde do Trabalho</div>
+    <div class="gate-bottom">© 2026 SST TECHNET · Tecnologia para um trabalho mais seguro</div>
   </section>
   <div id="app" class="app-shell" hidden>
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="#" data-route="dashboard" aria-label="TECHNET SST — início">
-        <span class="brand-mark"><img src="brand/app-icon.svg" alt="" aria-hidden="true"/></span>
-        <span class="brand-text"><strong>SST<span>TECHNET</span></strong><small>SAÚDE E SEGURANÇA</small></span>
+        <span class="brand-mark"><img src="brand/orbita.svg" alt="" aria-hidden="true"/></span>
+        <span class="brand-text"><strong>SST</strong><span class="brand-name">TECHNET</span><small>SAÚDE E SEGURANÇA</small></span>
       </a>
-      <div class="workspace"><span class="workspace-icon"><img src="brand/app-icon.svg" alt="" aria-hidden="true"/></span><span><b>TECHNET</b><small>Operações Telecom</small></span><span class="workspace-arrow">⌄</span></div>
+      <div class="workspace"><span class="workspace-icon">T</span><span><b>TECHNET</b><small>Operações Telecom</small></span><span class="workspace-arrow">⌄</span></div>
       <div class="nav-caption">GERENCIAMENTO</div>
       <nav id="nav">
         <a class="nav-link active" data-route="dashboard" href="#dashboard"><span data-icon="layout-dashboard"></span>Visão geral</a>
@@ -50,13 +62,13 @@
         <a class="nav-link" data-route="usuarios" id="nav-user-admin" href="#usuarios" hidden><span data-icon="users"></span>Gestão de usuários</a>
       </nav>
       <div class="sidebar-bottom">
-        <div class="safety-tip"><span class="tip-icon" data-icon="shield-check"></span><strong>Segurança em primeiro lugar</strong><p>Registre ocorrências e acompanhe ações preventivas em um só lugar.</p></div>
+        <div class="safety-tip"><span class="tip-icon" data-icon="shield-check"></span><strong>Segurança em cada camada.</strong><p>Prevenção, evidências e ações em uma única plataforma.</p></div>
         <button class="sidebar-user" id="account-btn" type="button"><span class="avatar" id="avatar">T</span><span><strong id="user-label">TECHNET SST</strong><small id="user-description">Ambiente de produção</small></span><span data-icon="chevrons-up-down"></span></button>
       </div>
     </aside>
     <div class="main-column">
       <header class="topbar">
-        <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb">SST · TECHNET</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
+        <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb"><span class="breadcrumb-mark"></span> SST TECHNET</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
         <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Autenticando</span><button class="icon-button" title="Alternar tema" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button><span class="header-avatar">T</span></div>
       </header>
       <main class="content" id="content"><div class="loading-panel">Carregando TECHNET SST…</div></main>
