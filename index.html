@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0e1a2e"/>
+  <meta name="description" content="TECHNET SST — Gestão de Segurança e Saúde do Trabalho para equipes de telecomunicações"/>
+  <title>TECHNET SST | Gestão de Segurança</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-route="dashboard" aria-label="TECHNET SST — início">
+        <span class="brand-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3.5 6v6c0 5.2 3.5 8.6 8.5 10 5-1.4 8.5-4.8 8.5-10V6L12 2Z"/><path d="m8 12 2.7 2.7L16.5 9"/></svg></span>
+        <span class="brand-text"><strong>TECHNET<span>SST</span></strong><small>GESTÃO DE SEGURANÇA</small></span>
+      </a>
+      <div class="workspace"><span class="workspace-icon">T</span><span><b>TECHNET</b><small>Operações Telecom</small></span><span class="workspace-arrow">⌄</span></div>
+      <div class="nav-caption">GERENCIAMENTO</div>
+      <nav id="nav">
+        <a class="nav-link active" data-route="dashboard" href="#dashboard"><span data-icon="layout-dashboard"></span>Visão geral</a>
+        <a class="nav-link" data-route="incidentes" href="#incidentes"><span data-icon="alert-triangle"></span>Incidentes</a>
+        <a class="nav-link" data-route="inspecoes" href="#inspecoes"><span data-icon="clipboard-check"></span>Inspeções</a>
+        <a class="nav-link" data-route="epis" href="#epis"><span data-icon="hard-hat"></span>Controle de EPIs</a>
+        <a class="nav-link" data-route="treinamentos" href="#treinamentos"><span data-icon="graduation-cap"></span>Treinamentos</a>
+        <a class="nav-link" data-route="acoes" href="#acoes"><span data-icon="list-checks"></span>Ações corretivas <span id="pending-badge" class="nav-count">0</span></a>
+        <div class="nav-caption secondary-caption">EQUIPE E ANÁLISE</div>
+        <a class="nav-link" data-route="colaboradores" href="#colaboradores"><span data-icon="users"></span>Colaboradores</a>
+        <a class="nav-link" data-route="relatorios" href="#relatorios"><span data-icon="chart-column"></span>Relatórios</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="safety-tip"><span class="tip-icon" data-icon="shield-check"></span><strong>Segurança em primeiro lugar</strong><p>Registre ocorrências e acompanhe ações preventivas em um só lugar.</p></div>
+        <button class="sidebar-user" id="account-btn" type="button"><span class="avatar" id="avatar">T</span><span><strong id="user-label">Modo demonstração</strong><small id="user-description">Dados de exemplo</small></span><span data-icon="chevrons-up-down"></span></button>
+      </div>
+    </aside>
+    <div class="main-column">
+      <header class="topbar">
+        <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb">TECHNET</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
+        <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Demonstração</span><button class="icon-button" title="Alternar tema" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button><span class="header-avatar">T</span></div>
+      </header>
+      <main class="content" id="content"><div class="loading-panel">Carregando TECHNET SST…</div></main>
+      <footer class="footer"><span>© 2026 TECHNET · Segurança e Saúde do Trabalho</span><span id="footer-state">Ambiente de demonstração</span></footer>
+    </div>
+  </div>
+  <div class="overlay" id="overlay" hidden></div>
+  <dialog id="record-dialog" class="dialog"><form id="record-form" method="dialog"><div class="dialog-head"><div><span class="eyebrow">TECHNET SST</span><h2 id="dialog-title">Novo registro</h2></div><button type="button" class="icon-button" id="dialog-close" aria-label="Fechar"><span data-icon="x"></span></button></div><div id="form-fields" class="form-fields"></div><div class="dialog-footer"><button type="button" class="btn btn-muted" id="dialog-cancel">Cancelar</button><button type="submit" class="btn btn-primary" id="save-record"><span data-icon="save"></span>Salvar registro</button></div></form></dialog>
+  <dialog id="auth-dialog" class="dialog auth-dialog"><div class="dialog-head"><div><span class="eyebrow">CONECTAR AO FIREBASE</span><h2>Acesso à TECHNET SST</h2></div><button type="button" class="icon-button" id="auth-close"><span data-icon="x"></span></button></div><p class="muted">Entre com uma conta autorizada para visualizar e atualizar os registros da equipe no Firebase.</p><button type="button" class="btn btn-google full" id="google-login"><span data-icon="log-in"></span>Entrar com Google</button><p class="auth-note" id="auth-message">O acesso depende da ativação do provedor Google no Firebase Authentication e da permissão atribuída ao usuário.</p><button type="button" class="btn btn-muted full" id="signout" hidden>Sair da conta</button></dialog>
+  <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

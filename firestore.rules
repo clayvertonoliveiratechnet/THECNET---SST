@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+    function admin() {
+      return signedIn() && request.auth.token.email == 'clayvertonoliveira@gmail.com';
+    }
+    function member() {
+      return signedIn() && (
+        admin() ||
+        (exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
+          && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.ativo == true)
+      );
+    }
+    function manager() {
+      return signedIn() && (admin() || (
+        member() &&
+        get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.perfil in ['admin','supervisor','sst']
+      ));
+    }
+    match /usuarios/{uid} {
+      allow read: if admin() || (signedIn() && request.auth.uid == uid);
+      allow create, update, delete: if admin();
+    }
+    match /{collection}/{docId} {
+      allow read: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores'] && member();
+      allow create: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores'] && manager() && request.resource.data.keys().hasAll(['titulo', 'criadoEm']);
+      allow update, delete: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores'] && manager();
+    }
+  }
+}
