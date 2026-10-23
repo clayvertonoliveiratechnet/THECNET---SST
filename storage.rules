@@ -1,0 +1,44 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function authenticated() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+    function owner() {
+      return authenticated() && request.auth.token.email == 'clayvertonoliveira@gmail.com';
+    }
+    function member() {
+      return authenticated() && (owner() ||
+        (firestore.exists(/databases/(default)/documents/usuarios/$(request.auth.uid))
+        && firestore.get(/databases/(default)/documents/usuarios/$(request.auth.uid)).data.ativo == true));
+    }
+    function manager() {
+      return authenticated() && (owner() ||
+        (member() && firestore.get(/databases/(default)/documents/usuarios/$(request.auth.uid)).data.perfil in ['admin', 'supervisor', 'sst']));
+    }
+    function acceptedContent() {
+      return request.resource.size > 0
+        && request.resource.size <= 20 * 1024 * 1024
+        && request.resource.contentType in [
+          'application/pdf',
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+          'text/csv',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.oasis.opendocument.text',
+          'application/vnd.oasis.opendocument.spreadsheet'
+        ];
+    }
+    match /sst/{group}/{documentId}/{fileName} {
+      allow read: if group in ['evidencias', 'programasSst'] && member();
+      allow create: if group in ['evidencias', 'programasSst']
+                    && manager() && acceptedContent();
+      allow update: if false;
+      allow delete: if group in ['evidencias', 'programasSst'] && manager();
+    }
+  }
+}

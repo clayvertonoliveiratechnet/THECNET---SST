@@ -25,9 +25,9 @@ service cloud.firestore {
       allow create, update, delete: if admin();
     }
     match /{collection}/{docId} {
-      allow read: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores'] && member();
-      allow create: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores'] && manager() && request.resource.data.keys().hasAll(['titulo', 'criadoEm']);
-      allow update, delete: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores'] && manager();
+      allow read: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst'] && member();
+      allow create: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst'] && manager() && request.resource.data.keys().hasAll(['titulo', 'criadoEm']);
+      allow update, delete: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst'] && manager();
     }
   }
 }

@@ -56,5 +56,8 @@
         "supportEmail": "clayvertonoliveira@gmail.com"
       }
     }
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
