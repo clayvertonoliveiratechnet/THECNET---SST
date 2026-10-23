@@ -1,8 +1,10 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {getFirestore,collection,getDocs,addDoc,updateDoc,deleteDoc,doc,getDoc} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-import {setupLibrary,renderLibrary,loadLibrary,clearLibrary,libraryStats} from "./biblioteca.js";
+import {setupLibrary,renderLibrary,loadLibrary,clearLibrary,libraryStats,libraryProgramas} from "./biblioteca.js";
 import {setupUserAdmin,renderUserAdmin,loadUserAdmin,resetUserAdmin} from "./usuarios-admin.js";
+import {renderBodyMap,setupBodyMap,bodyFields,BODY_AREAS,regionsOf} from "./mapa-corporal.js";
+import {renderPgrDashboard,loadPgrIndicators,clearPgrIndicators} from "./pgr-dashboard.js";
 
 const config={apiKey:"AIzaSyCxm8bh7KLU2QQUEdED71xyO2GjhZsBs1s",authDomain:"technet-sst-2026.firebaseapp.com",projectId:"technet-sst-2026",storageBucket:"technet-sst-2026.firebasestorage.app",messagingSenderId:"276807543932",appId:"1:276807543932:web:adca9a2ab35b8644e22df9"};
 const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
@@ -20,7 +22,7 @@ const specs={
  colaboradores:[["titulo","Nome completo","text",true],["tipo","Função","select","Técnico|Supervisor|Técnico de SST|Coordenador|Gestor|Outro"],["setor","Setor","select","Campo|MDU|Construção|Técnico|Comercial|Administrativo"],["responsavel","Matrícula","text"],["data","Admissão","date"],["status","Situação","select","Ativo|Afastado|Inativo"],["descricao","Observações","textarea"]]
 };
 const display={
- incidentes:["titulo","tipo","data","setor","gravidade","status"],inspecoes:["titulo","tipo","data","responsavel","status"],epis:["titulo","tipo","responsavel","validade","status"],treinamentos:["titulo","tipo","responsavel","validade","status"],acoes:["titulo","responsavel","prazo","prioridade","status"],colaboradores:["titulo","tipo","setor","responsavel","status"]
+ incidentes:["titulo","tipo","data","setor","partesCorpo","gravidade","status"],inspecoes:["titulo","tipo","data","responsavel","status"],epis:["titulo","tipo","responsavel","validade","status"],treinamentos:["titulo","tipo","responsavel","validade","status"],acoes:["titulo","responsavel","prazo","prioridade","status"],colaboradores:["titulo","tipo","setor","responsavel","status"]
 };
 const symbols={
  "layout-dashboard":'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
@@ -72,17 +74,17 @@ function intro(title,description,buttons){return '<section class="page-intro"><d
 function banner(){return "";}
 function kpi(title,num,icon,color,foot){return '<article class="card kpi-card"><div class="kpi-top"><span>'+escape(title)+'</span><span class="kpi-icon ic-'+color+'">'+ico(icon)+'</span></div><div class="kpi-value">'+escape(num)+'</div><div class="kpi-foot">'+foot+'</div></article>';}
 function charts(){let now=new Date(),months=[];for(let i=5;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({month:d.getMonth(),year:d.getFullYear(),name:d.toLocaleDateString("pt-BR",{month:"short"}).replace(".","")});}let getCnt=(k,m)=>data[k].filter(x=>{let d=new Date((x.data||"2000-01-01")+"T12:00:00");return d.getMonth()===m.month&&d.getFullYear()===m.year;}).length;let values=months.map(m=>[getCnt("inspecoes",m),getCnt("incidentes",m)]),max=Math.max(5,...values.flat());let bars=months.map((m,i)=>'<div class="bar-col"><div class="bar-bars"><div class="bar secondary" style="--bar-h:'+(values[i][0]/max*94)+'%" data-tip="'+values[i][0]+' inspeções"></div><div class="bar" style="--bar-h:'+(values[i][1]/max*94)+'%" data-tip="'+values[i][1]+' ocorrências"></div></div><span class="bar-label">'+escape(m.name)+'</span></div>').join("");return '<article class="card chart-card"><div class="card-heading"><div><h2>Indicadores mensais</h2><p>Inspeções e ocorrências nos últimos 6 meses</p></div><span class="chip">Últimos 6 meses</span></div><div class="bar-chart">'+bars+'</div><div class="chart-legend"><span><i class="legend-dot secondary"></i> Inspeções</span><span><i class="legend-dot"></i> Ocorrências</span></div></article>';}
-function donut(){let checks=data.inspecoes,good=checks.filter(x=>x.status==="Conforme").length,pending=checks.filter(x=>x.status==="Pendente").length,bad=checks.filter(x=>x.status==="Não conforme").length,all=Math.max(checks.length,1),g=(good/all*100).toFixed(1)+"%",m=((good+pending)/all*100).toFixed(1)+"%";return '<article class="card chart-card"><div class="card-heading"><div><h2>Conformidade das inspeções</h2><p>Distribuição por resultado</p></div>'+ico("clipboard-check")+'</div><div class="donut-wrap"><div class="donut" style="--good:'+g+';--mid:'+m+'"><div class="donut-hole"><b>'+Math.round(good/all*100)+'%</b><small>Conformes</small></div></div><div class="donut-legend"><div class="donut-row"><span><i class="dot dot-green"></i> Conforme</span><b>'+good+'</b></div><div class="donut-row"><span><i class="dot dot-yellow"></i> Pendente</span><b>'+pending+'</b></div><div class="donut-row"><span><i class="dot dot-red"></i> Não conforme</span><b>'+bad+'</b></div></div></div></article>';}
+function donut(){if(!data.inspecoes.length)return '<article class="card chart-card"><div class="card-heading"><div><h2>Conformidade das inspeções</h2><p>Nenhuma inspeção registrada</p></div></div><div class="empty-state">Cadastre inspeções para acompanhar o índice de conformidade. Não há resultado a calcular no momento.</div></article>';let checks=data.inspecoes,good=checks.filter(x=>x.status==="Conforme").length,pending=checks.filter(x=>x.status==="Pendente").length,bad=checks.filter(x=>x.status==="Não conforme").length,all=Math.max(checks.length,1),g=(good/all*100).toFixed(1)+"%",m=((good+pending)/all*100).toFixed(1)+"%";return '<article class="card chart-card"><div class="card-heading"><div><h2>Conformidade das inspeções</h2><p>Distribuição por resultado</p></div>'+ico("clipboard-check")+'</div><div class="donut-wrap"><div class="donut" style="--good:'+g+';--mid:'+m+'"><div class="donut-hole"><b>'+Math.round(good/all*100)+'%</b><small>Conformes</small></div></div><div class="donut-legend"><div class="donut-row"><span><i class="dot dot-green"></i> Conforme</span><b>'+good+'</b></div><div class="donut-row"><span><i class="dot dot-yellow"></i> Pendente</span><b>'+pending+'</b></div><div class="donut-row"><span><i class="dot dot-red"></i> Não conforme</span><b>'+bad+'</b></div></div></div></article>';}
 function feed(){let all=keys.filter(x=>x!=="colaboradores").flatMap(k=>data[k].map(r=>({...r,_section:k})));let recent=sorted(all).slice(0,4);return '<article class="card section-card"><div class="card-heading"><div><h2>Atividade recente</h2><p>Últimos registros na plataforma</p></div><span class="chip">Atualizações</span></div><div class="timeline">'+(recent.length?recent.map(r=>'<div class="timeline-item"><span class="timeline-icon ic-'+(r._section==="incidentes"?"red":"green")+'">'+ico(r._section==="incidentes"?"alert-triangle":"clipboard-check")+'</span><div class="timeline-text"><strong>'+escape(r.titulo)+'</strong><small>'+escape(names[r._section])+' · '+escape(r.responsavel||"Equipe")+'</small></div><span class="timeline-time">'+date((r.criadoEm||"").slice(0,10))+'</span></div>').join(""):"<p>Nenhum registro encontrado.</p>")+'</div></article>';}
 function tasks(){let active=data.acoes.filter(x=>x.status!=="Concluída").slice(0,4);return '<article class="card section-card"><div class="card-heading"><div><h2>Ações prioritárias</h2><p>Planos em acompanhamento</p></div><a href="#acoes" class="chip">Ver todas →</a></div><div class="tasklist">'+(active.length?active.map(a=>'<div class="task"><span class="priority '+(["Crítica","Alta"].includes(a.prioridade)?"high":a.prioridade==="Baixa"?"low":"")+'"></span><div class="task-content"><b>'+escape(a.titulo)+'</b><small>'+escape(a.responsavel||"Equipe")+' · Prazo: '+date(a.prazo)+'</small></div>'+pill(a.status)+'</div>').join(""):"<p>Sem pendências cadastradas.</p>")+'</div></article>';}
 function documentsOverview(){
  const stat=libraryStats();
  return '<section class="card docs-overview"><div><span class="eyebrow">BIBLIOTECA SST · PRODUÇÃO</span><h2>Documentação técnica cadastrada</h2><p>Programas e evidências recuperados diretamente do Cloud Firestore.</p></div><div class="docs-metrics"><div><strong>'+stat.vigentes+'</strong><span>PGRs mais recentes</span></div><div><strong>'+stat.totalPgr+'</strong><span>Versões de PGR</span></div><div><strong>'+stat.evidencias+'</strong><span>Evidências vinculadas</span></div></div><a href="#programas" class="btn btn-primary">Abrir biblioteca →</a></section>';
 }
-function home(){let checks=count("inspecoes"),good=data.inspecoes.filter(x=>x.status==="Conforme").length,pending=data.acoes.filter(x=>x.status!=="Concluída").length;return intro("Visão geral","Centro de inteligência de SST da TECHNET.",button("Exportar dados","download","export-all")+button("Novo registro","plus","new-incidentes","btn-primary"))+banner()+'<div class="kpi-grid">'+kpi("Colaboradores",count("colaboradores"),"users","blue","Equipe cadastrada")+kpi("Ocorrências",count("incidentes"),"alert-triangle","red","Registros de incidentes")+kpi("Inspeções conformes",checks?Math.round(100*good/checks)+"%":"0%","shield-check","green",good+" de "+checks+" inspeções")+kpi("Ações pendentes",pending,"clock","orange","Precisam de atenção")+'</div><div class="dashboard-grid">'+charts()+donut()+'</div><div class="dashboard-bottom">'+feed()+tasks()+'</div>'+documentsOverview();}
-function cell(key,value){return ["status","gravidade","prioridade"].includes(key)?pill(value):["data","validade","prazo"].includes(key)?date(value):escape(value||"—");}
+function home(){let checks=count("inspecoes"),good=data.inspecoes.filter(x=>x.status==="Conforme").length,pending=data.acoes.filter(x=>x.status!=="Concluída").length;return intro("Visão geral","Centro de inteligência de SST da TECHNET.",button("Exportar dados","download","export-all")+button("Novo registro","plus","new-incidentes","btn-primary"))+banner()+'<div class="kpi-grid">'+kpi("Colaboradores",count("colaboradores"),"users","blue","Equipe cadastrada")+kpi("Ocorrências",count("incidentes"),"alert-triangle","red","Registros de incidentes")+kpi("Inspeções conformes",checks?Math.round(100*good/checks)+"%":"—","shield-check","green",good+" de "+checks+" inspeções")+kpi("Ações pendentes",pending,"clock","orange","Precisam de atenção")+'</div><div class="dashboard-grid">'+charts()+donut()+'</div><div class="dashboard-bottom">'+feed()+tasks()+'</div>'+documentsOverview()+renderPgrDashboard(libraryProgramas())+renderBodyMap(data.incidentes);}
+function cell(key,value){if(key==="partesCorpo")return regionsOf({partesCorpo:value}).map(x=>BODY_AREAS.find(a=>a[0]===x)?.[1]||x).join(", ")||"—";return ["status","gravidade","prioridade"].includes(key)?pill(value):["data","validade","prazo"].includes(key)?date(value):escape(value||"—");}
 function rows(section){let a=sorted(data[section]);if(search){let q=search.toLowerCase();a=a.filter(r=>Object.values(r).some(v=>String(v??"").toLowerCase().includes(q)));}if(statusFilter)a=a.filter(r=>r.status===statusFilter);return a.map(r=>'<tr>'+display[section].map(k=>'<td>'+(k==="titulo"?'<strong>'+cell(k,r[k])+'</strong>':cell(k,r[k]))+'</td>').join("")+'<td><div class="table-row-actions">'+(canWrite()?'<button type="button" title="Editar" data-action="edit" data-section="'+section+'" data-id="'+escape(r.id)+'">'+ico("edit")+'</button><button type="button" title="Excluir" data-action="delete" data-section="'+section+'" data-id="'+escape(r.id)+'">'+ico("trash")+'</button>':"Somente leitura")+'</div></td></tr>').join("");}
-function listing(section){let states=[...new Set(data[section].map(r=>r.status).filter(Boolean))];return intro(names[section],descriptions[section],button("Exportar CSV","download","export-"+section)+(canWrite()?button("Novo registro","plus","new-"+section,"btn-primary"):""))+banner()+'<article class="card table-card"><div class="table-toolbar"><div><h2>Registros cadastrados</h2><p class="subtitle">'+count(section)+' registro(s) no total</p></div><div class="table-actions"><label class="search-box">'+ico("search")+'<input id="table-search" autocomplete="off" placeholder="Buscar registros..." value="'+escape(search)+'"></label><select class="filter-select" id="table-filter"><option value="">Todos os status</option>'+states.map(s=>'<option value="'+escape(s)+'" '+(s===statusFilter?"selected":"")+'>'+escape(s)+'</option>').join("")+'</select></div></div><div class="table-scroll"><table class="data-table"><thead><tr>'+display[section].map(k=>'<th>'+escape(specs[section].find(s=>s[0]===k)?.[1]||k)+'</th>').join("")+'<th>Ações</th></tr></thead><tbody id="table-body">'+rows(section)+'</tbody></table></div><div class="empty-state" id="empty-filter" '+(rows(section)?"hidden":"")+'>'+ico("search")+'<strong>Nenhum resultado</strong><p>Altere os filtros ou crie um registro.</p></div></article>';}
+function listing(section){let states=[...new Set(data[section].map(r=>r.status).filter(Boolean))];return intro(names[section],descriptions[section],button("Exportar CSV","download","export-"+section)+(canWrite()?button("Novo registro","plus","new-"+section,"btn-primary"):""))+banner()+'<article class="card table-card"><div class="table-toolbar"><div><h2>Registros cadastrados</h2><p class="subtitle">'+count(section)+' registro(s) no total</p></div><div class="table-actions"><label class="search-box">'+ico("search")+'<input id="table-search" autocomplete="off" placeholder="Buscar registros..." value="'+escape(search)+'"></label><select class="filter-select" id="table-filter"><option value="">Todos os status</option>'+states.map(s=>'<option value="'+escape(s)+'" '+(s===statusFilter?"selected":"")+'>'+escape(s)+'</option>').join("")+'</select></div></div><div class="table-scroll"><table class="data-table"><thead><tr>'+display[section].map(k=>'<th>'+escape(specs[section].find(s=>s[0]===k)?.[1]||(k==="partesCorpo"?"Regiões atingidas":k))+'</th>').join("")+'<th>Ações</th></tr></thead><tbody id="table-body">'+rows(section)+'</tbody></table></div><div class="empty-state" id="empty-filter" '+(rows(section)?"hidden":"")+'>'+ico("search")+'<strong>Nenhum resultado</strong><p>Altere os filtros ou crie um registro.</p></div></article>';}
 function reports(){return intro("Relatórios","Exporte os dados para auditorias e acompanhamento gerencial.",button("Exportar tudo","download","export-all","btn-primary"))+banner()+'<div class="report-callout">'+ico("shield-check")+'<span>Verifique os dados e documentos originais antes de usá-los como evidência normativa.</span></div><div class="report-grid">'+keys.map(k=>'<article class="card report-box"><span class="kpi-icon ic-blue">'+ico("file-text")+'</span><h3>'+escape(names[k])+'</h3><p>'+escape(descriptions[k])+'</p><div class="mini-progress"><div style="width:'+Math.min(count(k)*15,100)+'%"></div></div><p>'+count(k)+' registros</p>'+button("Baixar CSV","download","export-"+k)+'</article>').join("")+'</div>';}
 
 function updateGate(){
@@ -129,7 +131,7 @@ function render(){
  icons();header();
 }
 
-function formFields(section,old){return specs[section].map(([key,label,type,opts])=>{let v=old?.[key]??(key==="data"?today():""),required=opts===true?"required":"";let control=type==="select"?'<select name="'+key+'"><option value="">Selecione...</option>'+String(opts).split("|").map(c=>'<option value="'+escape(c)+'" '+(v===c?"selected":"")+'>'+escape(c)+'</option>').join("")+'</select>':type==="textarea"?'<textarea name="'+key+'">'+escape(v)+'</textarea>':'<input type="'+type+'" name="'+key+'" value="'+escape(v)+'" '+required+' maxlength="180">';return '<div class="form-field '+(key==="titulo"||type==="textarea"?"wide":"")+'"><label>'+escape(label)+(required?" *":"")+'</label>'+control+'</div>';}).join("");}
+function formFields(section,old){return specs[section].map(([key,label,type,opts])=>{let v=old?.[key]??(key==="data"?today():""),required=opts===true?"required":"";let control=type==="select"?'<select name="'+key+'"><option value="">Selecione...</option>'+String(opts).split("|").map(c=>'<option value="'+escape(c)+'" '+(v===c?"selected":"")+'>'+escape(c)+'</option>').join("")+'</select>':type==="textarea"?'<textarea name="'+key+'">'+escape(v)+'</textarea>':'<input type="'+type+'" name="'+key+'" value="'+escape(v)+'" '+required+' maxlength="180">';return '<div class="form-field '+(key==="titulo"||type==="textarea"?"wide":"")+'"><label>'+escape(label)+(required?" *":"")+'</label>'+control+'</div>';}).join("")+(section==="incidentes"?bodyFields(old):"");}
 function openForm(section,id){if(!canWrite()){toast("Você não tem permissão para alterar registros.",true);return;}editing=id||null;$("#record-form").dataset.section=section;$("#dialog-title").textContent=(id?"Editar ":"Novo registro · ")+names[section];$("#form-fields").innerHTML=formFields(section,id?data[section].find(r=>r.id===id):null);$("#record-dialog").showModal();}
 
 async function refresh(version=sessionVersion){
@@ -140,7 +142,7 @@ async function refresh(version=sessionVersion){
   return [k,snap.docs.map(record=>({...record.data(),id:record.id}))];
  }));
  if(auth.currentUser?.uid!==expectedUid||version!==sessionVersion)return;
- await loadLibrary();
+ await Promise.all([loadLibrary(),loadPgrIndicators(db)]);
  if(auth.currentUser?.uid!==expectedUid||version!==sessionVersion){clearLibrary();return;}
  data=Object.fromEntries(entries);
  mode="cloud";
@@ -151,7 +153,13 @@ async function save(event){
  event.preventDefault();
  if(!canWrite())return toast("Acesso não autorizado.",true);
  const section=event.currentTarget.dataset.section;
- const values=Object.fromEntries(new FormData(event.currentTarget).entries());
+ const formData=new FormData(event.currentTarget);
+ const values=Object.fromEntries(formData.entries());
+ if(section==="incidentes"){
+  values.partesCorpo=formData.getAll("partesCorpo");
+  const dp=values.diasPerdidos;
+  values.diasPerdidos=dp===""?"":Math.max(0,Math.floor(Number(dp)||0));
+ }
  if(!values.titulo?.trim())return toast("Informe o título do registro.",true);
  const old=data[section].find(r=>r.id===editing);
  const entry={...values,criadoEm:old?.criadoEm||new Date().toISOString(),atualizadoEm:new Date().toISOString()};
@@ -182,7 +190,7 @@ async function remove(section,id){
 }
 
 function download(text,filename,type){let blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);}
-function exportCsv(k){let cols=["id",...specs[k].map(s=>s[0]),"criadoEm"];let out=[cols,...data[k].map(r=>cols.map(x=>r[x]||""))].map(row=>row.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(";")).join("\r\n");download("\ufeff"+out,"TECHNET-SST-"+k+"-"+today()+".csv","text/csv;charset=utf-8");toast("CSV preparado.");}
+function exportCsv(k){let cols=["id",...specs[k].map(s=>s[0]),...(k==="incidentes"?["empresa","unidade","naturezaLesao","houveAfastamento","diasPerdidos","catEmitida","partesCorpo"]:[]),"criadoEm"];let out=[cols,...data[k].map(r=>cols.map(x=>Array.isArray(r[x])?r[x].join(", "):(r[x]??"")))].map(row=>row.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(";")).join("\r\n");download("\ufeff"+out,"TECHNET-SST-"+k+"-"+today()+".csv","text/csv;charset=utf-8");toast("CSV preparado.");}
 function exportAll(){download(JSON.stringify({projeto:"TECHNET SST",ambiente:mode,exportadoEm:new Date().toISOString(),dados:data},null,2),"TECHNET-SST-"+today()+".json","application/json;charset=utf-8");toast("Backup exportado.");}
 
 async function login(){
@@ -205,6 +213,7 @@ async function login(){
  }
 }
 setupLibrary({db,auth,getCtx:()=>({mode,user,role}),toast,rerender:render});
+setupBodyMap();
 setupUserAdmin({db,auth,getCtx:()=>({mode,user,role}),toast,rerender:render,
  getCollaborators:()=>data.colaboradores,
  reloadCollaborators:async()=>{
@@ -216,6 +225,7 @@ setupUserAdmin({db,auth,getCtx:()=>({mode,user,role}),toast,rerender:render,
 async function bootstrap(currentUser){
  const version=++sessionVersion;
  clearLibrary();
+ clearPgrIndicators();
  resetUserAdmin();
  data=emptyData();
  user=currentUser;
@@ -260,7 +270,7 @@ onAuthStateChanged(auth,bootstrap,err=>{
  console.error("Falha ao validar sessão Firebase",err);
  ++sessionVersion;
  user=null;role="leitura";mode="error";
- data=emptyData();clearLibrary();resetUserAdmin();
+ data=emptyData();clearLibrary();clearPgrIndicators();resetUserAdmin();
  accessError="Falha ao validar a sessão do Firebase. Tente recarregar a página.";
  render();
 });

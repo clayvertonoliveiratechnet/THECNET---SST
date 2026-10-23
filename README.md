@@ -78,3 +78,20 @@ O sistema é uma ferramenta de controle interno e não substitui a documentaçã
 - Bloqueio impede novas leituras e escritas nas regras do Firestore; não desfaz downloads já realizados.
 - A conta proprietária clayvertonoliveira@gmail.com mantém acesso de superadministrador.
 - A autorização é validada no banco, não somente pela visibilidade do menu.
+
+## Dashboard PGR e mapa corporal — 23/10/2026
+
+O painel agrega as duas planilhas XLSX recebidas no ZIP e as versões PGR em PDF/Word. Os 17 arquivos originais incluem um PDF de Recife duplicado. Os arquivos únicos e o ZIP original estão preservados em Drive privado, com links nos registros programasSst (9 versões) e evidencias (2 controles).
+
+As 5 unidades em pgrIndicadores são Natal DMV, Natal RDT, Natal VNA, Recife DMV e Fortaleza DMV. Não há PGR Mossoró no ZIP.
+
+Os quantitativos da planilha INFORMAÇOES PGR 2026.xlsx são somas de QT por função até a linha Total de funcionários. Não constituem efetivo ativo validado nem acidentes:
+- Soma de totais declarados: 506; soma dos quantitativos por função: 508.
+- Trabalho em altura SIM: 225; motocicleta SIM: 40, somando somente linhas explicitamente marcadas SIM.
+- DMV Natal: soma 28 vs declarado 27. Fortaleza: soma 27 vs declarado 26.
+- Controle PGR apresenta números diferentes em várias unidades; fontes mantidas separadas.
+- VNA tem quadro da RDT depois do total VNA, excluído do cálculo VNA.
+- DMV-FORTALEZA tem cabeçalho Matriz Natal, pendente de conferência.
+- Controle PGR indica RDT Revisão 002 e o PDF atual do ZIP é Rev.3.
+
+Para mapa de acidentes, o tipo precisa ser Acidente no registro de incidentes. Os campos adicionais permitem registrar regiões, natureza da lesão, afastamento, dias perdidos, CAT e unidade. Acidentes afetam o total uma vez, mas podem contribuir para várias regiões do corpo. O mapa frontal/posterior tem filtros por período e unidade. PGR não alimenta número de acidentes e não são apresentadas taxas de frequência/gravididade sem horas trabalhadas.

@@ -49,6 +49,7 @@ document.addEventListener("click",onClick);document.addEventListener("input",ev=
 document.addEventListener("change",ev=>{if(ev.target.id==="lib-category"){state.tipoFiltro=ev.target.value;const list=$("#lib-list");if(list)list.innerHTML=evidenceRows();}});
 }
 export async function loadLibrary(){if(!services)return;const {db}=services;const rs=await Promise.all([getDocs(collection(db,"evidencias")),getDocs(collection(db,"programasSst"))]);state.evidencias=rs[0].docs.map(d=>({id:d.id,...d.data()}));state.programas=rs[1].docs.map(d=>({id:d.id,...d.data()}));}
+export function libraryProgramas(){return state.programas.slice();}
 export function libraryStats(){
  const pgr=state.programas.filter(r=>r.tipo==="PGR");
  return {totalPgr:pgr.length,vigentes:pgr.filter(r=>r.status==="Vigente").length,evidencias:state.evidencias.length};
