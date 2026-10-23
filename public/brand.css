@@ -141,3 +141,12 @@ body.dark .gate-card{background:#FFFFFF;color:#17212B}
 @media(max-width:720px){.sidebar{width:270px;left:-280px}.sidebar.open{left:0}.topbar{height:65px;padding:0 16px}.content{padding:20px 14px}.kpi-card{padding:16px}.gate-card{padding:32px 27px 28px}.gate-card h1{font-size:28px}.gate-indicator{margin-top:28px}}
 @media(max-width:400px){.auth-gate{padding:16px 12px}.gate-card{padding:26px 22px}.gate-card h1{font-size:25px}.gate-brand-logo{max-width:245px}.gate-description{font-size:11px}.gate-bottom{font-size:9px}.breadcrumb{gap:5px}.breadcrumb-mark{display:none}}
 @media(prefers-reduced-motion:reduce){.kpi-card,.btn{transition:none!important}.kpi-card:hover,.btn-primary:hover{transform:none}}
+
+/* Defensive narrow-viewport sizing: never let the auth grid exceed the screen. */
+@media(max-width:600px){
+ .auth-gate{width:100%;max-width:100%;overflow-x:hidden;padding-inline:14px}
+ .gate-layout{display:block;min-height:0;width:100%;min-width:0;max-width:480px}
+ .gate-card{min-width:0;max-width:100%;width:100%;overflow-wrap:anywhere}
+ .gate-brand-logo{max-width:min(100%,260px)}
+ .gate-description,.gate-bottom{overflow-wrap:anywhere}
+}
