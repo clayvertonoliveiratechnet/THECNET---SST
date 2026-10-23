@@ -8,7 +8,7 @@ Dashboard web de Segurança e Saúde do Trabalho da TECHNET para operações de 
 - Cadastro, edição, exclusão, busca e filtros de incidentes, inspeções, EPIs, treinamentos, ações corretivas e colaboradores;
 - Exportação CSV de cada módulo e backup JSON;
 - Interface responsiva com temas claro/escuro;
-- Demonstração com dados estritamente fictícios no navegador;
+- Autenticação Google obrigatória, sem modo demonstração e sem dados fictícios;
 - Firebase Authentication com login pelo Google;
 - Cloud Firestore com permissões por perfil e proteção de leitura e escrita.
 
@@ -36,11 +36,13 @@ Apenas a conta inicial pode cadastrar ou editar permissões de usuários. Um sup
 Na raiz do repositório:
 firebase deploy --project technet-sst-2026
 
-O site é estático e não exige instalação de pacotes, mas importa os módulos oficiais do Firebase e as fontes pela internet. Para testes, abra a URL do Hosting e clique em Conectar para entrar com o Google.
+O site é estático e não exige instalação de pacotes, mas importa os módulos oficiais do Firebase e as fontes pela internet. Para acessar, abra a URL do Hosting e clique em Entrar com Google. Apenas contas autorizadas carregam informações reais do Firestore.
 
 ## Limitações e proteção de dados
 
-O login interativo Google e as operações de escrita de usuários reais exigem testes operacionais. O modo demonstração NÃO envia registros ao Firestore. Nunca insira dados pessoais reais nesse modo.
+O login é obrigatório: a interface principal não aparece até a validação da conta e o carregamento bem-sucedido do Firestore. Em caso de erro, a aplicação mostra somente a tela de acesso e oferece uma nova tentativa, sem recorrer a dados fictícios.
+
+As operações interativas de login, leitura e escrita ainda precisam de teste com as contas operacionais autorizadas. Os documentos vinculados ao Google Drive permanecem sujeitos às permissões do próprio Drive.
 
 O sistema é uma ferramenta de controle interno e não substitui a documentação legal obrigatória de SST. Defina uma política de retenção, verificação de documentação e backup antes da entrada em produção com dados de trabalhadores.
 
@@ -55,3 +57,13 @@ O sistema é uma ferramenta de controle interno e não substitui a documentaçã
 - Depois que o bucket existir, execute firebase deploy --only storage --project technet-sst-2026 para publicar as regras de acesso. O upload não deve ser disponibilizado sem essas regras.
 - Documentos gerais do PCMSO podem ser cadastrados. Não armazenar prontuários, ASOs individuais, exames ou dados médicos sem uma arquitetura específica de acesso por necessidade e retenção definida.
 - Cada registro é vinculado opcionalmente a uma matrícula, OS, placa ou inspeção. O link IVM do Forms deve ser informado pela equipe, pois não está disponível neste projeto.
+
+
+## Versão de produção (2026-10-23)
+
+- Modo de demonstração desativado; dados locais fictícios do navegador são descartados automaticamente.
+- Menu e dashboard visíveis apenas depois de autenticação/autorização e carregamento do banco.
+- Falhas no Firestore não provocam retorno a conteúdo fictício; exibem aviso e botão para tentar novamente.
+- Os onze registros reais de PGR (9 versões e 2 controles) já estão no Firestore, vinculados ao Drive.
+- A conta proprietária definida nas regras é clayvertonoliveira@gmail.com; demais contas precisam ser aprovadas na coleção usuarios.
+- O upload binário ainda depende do bucket Cloud Storage (Blaze). Links do Google Drive estão suportados.
