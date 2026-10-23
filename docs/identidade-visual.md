@@ -1,23 +1,27 @@
-# Identidade visual SST TECHNET — Órbita de Proteção
+# SST TECHNET — Identidade visual v2
 
-Direção: saúde e segurança do trabalho, com oito órbitas vermelhas evocando camadas de prevenção e controle. Assinatura: **Segurança em cada camada.**
+Revisão premium baseada na referência dos círculos concêntricos e na prancha visual validada no projeto.
 
-## Arquivos
-- `public/brand/logo-horizontal.svg`: assinatura horizontal em fundo claro.
-- `public/brand/logo-horizontal-escuro.svg`: assinatura horizontal em fundo escuro.
-- `public/brand/orbita.svg`: símbolo vetorial, transparente.
-- `public/brand/app-icon.svg`: ícone para telas de acesso, barra lateral e aplicativo.
-- `public/favicon.svg`: versão simplificada para abas.
-- `public/brand.css`: personalização visual carregada após `styles.css`.
+## Marca
+- **Símbolo:** órbitas de monitoramento e proteção, com três nós de conexão; traços segmentados e centro vazado
+- **Assinatura:** SST TECHNET — Saúde e Segurança do Trabalho
+- **Conceito:** Segurança em cada camada
+- **Fonte de interface e assinatura:** Sora (fallback Arial)
 
-## Cores
-- Primário: `#B51222` (botões e ações).
-- Órbita: `#E10D1D` (símbolo e acentos).
-- Texto: `#17212B`; grafite: `#1B2A38`.
-- Superfície: `#FFFFFF`; fundo: `#F7F8FA`; bordas: `#D7DEE5`.
-- Contraste alto no escuro: `#FF7888` para texto/ênfase; ações mantém vermelho escuro e texto branco.
+## Paleta
+- Vermelho institucional: `#B51222`; vermelho vivo: `#E10D1D`
+- Grafite principal: `#17212B`; superfície escura: `#1B2A38`
+- Fundo da aplicação: `#F5F7F9`; cartões: `#FFFFFF`
 
-## Integração
-O layout existente continua estático no Firebase Hosting; nenhuma regra, rotina Firebase, ação JS, formulário ou fonte de dados foi modificada. `brand.css` altera somente aparência. Os temas claro e escuro continuam funcionando.
+## Aplicação
+- `public/brand/orbita.svg`: símbolo standalone sem fundo
+- `public/brand/logo-horizontal.svg`: logo para fundo claro
+- `public/brand/logo-horizontal-escuro.svg`: logo para fundo escuro
+- `public/brand/app-icon.svg`: ícone do app
+- `public/favicon.svg`: favicon
+- `public/brand.css`: tokens, telas de acesso, sidebar, dashboard, cartões, responsividade e modo escuro
 
-Publicação é uma etapa separada: após aprovar/mesclar, execute `firebase deploy --only hosting --project technet-sst-2026` de um ambiente autenticado.
+O redesign preserva os IDs de elementos, eventos de autenticação, rotas internas, regras de Firebase e tratamento de dados. A autenticação continua obrigatória; exemplos na prancha visual não representam dados reais nem foram inseridos no sistema.
+
+## Publicação
+`firebase deploy --only hosting --project technet-sst-2026`
