@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#0e1a2e"/>
+  <meta name="theme-color" content="#17212B"/>
   <meta name="description" content="TECHNET SST — Gestão de Segurança e Saúde do Trabalho para equipes de telecomunicações"/>
-  <title>TECHNET SST | Gestão de Segurança</title>
+  <title>SST TECHNET | Gestão de Segurança</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
   <link rel="stylesheet" href="styles.css?v=20261023-prod"/>
+  <link rel="stylesheet" href="brand.css?v=20261023-orbita"/>
 </head>
 <body>
   <section id="auth-gate" class="auth-gate" aria-live="polite">
     <div class="gate-card">
-      <div class="gate-brand"><span class="gate-brand-icon">✚</span><span>TECHNET <b>SST</b></span></div>
+      <div class="gate-brand"><img class="gate-brand-icon" src="brand/app-icon.svg" alt="" aria-hidden="true"/><span class="gate-brand-copy"><strong>SST <b>TECHNET</b></strong><small>SAÚDE E SEGURANÇA DO TRABALHO</small></span></div>
       <div class="gate-indicator"><span></span> AMBIENTE DE PRODUÇÃO</div>
-      <h1>Segurança em cada operação.</h1>
+      <h1>Segurança em cada camada.</h1>
       <p class="gate-description">Gestão de SST para equipes de telecomunicações. Acesse seus registros, programas, inspeções e evidências com a conta autorizada.</p>
       <div id="gate-status" class="gate-status" role="status">Verificando sua sessão...</div>
       <button type="button" class="btn gate-signin" id="gate-google-login" hidden>Entrar com Google →</button>
@@ -22,15 +23,15 @@
       <button type="button" class="btn btn-muted gate-switch" id="gate-switch" hidden>Trocar conta Google</button>
       <div class="gate-footnote">Acesso restrito · Firebase Authentication · TECHNET</div>
     </div>
-    <div class="gate-bottom">TECHNET SST · Segurança e Saúde do Trabalho</div>
+    <div class="gate-bottom">SST · TECHNET — Segurança e Saúde do Trabalho</div>
   </section>
   <div id="app" class="app-shell" hidden>
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="#" data-route="dashboard" aria-label="TECHNET SST — início">
-        <span class="brand-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 3.5 6v6c0 5.2 3.5 8.6 8.5 10 5-1.4 8.5-4.8 8.5-10V6L12 2Z"/><path d="m8 12 2.7 2.7L16.5 9"/></svg></span>
-        <span class="brand-text"><strong>TECHNET<span>SST</span></strong><small>GESTÃO DE SEGURANÇA</small></span>
+        <span class="brand-mark"><img src="brand/app-icon.svg" alt="" aria-hidden="true"/></span>
+        <span class="brand-text"><strong>SST<span>TECHNET</span></strong><small>SAÚDE E SEGURANÇA</small></span>
       </a>
-      <div class="workspace"><span class="workspace-icon">T</span><span><b>TECHNET</b><small>Operações Telecom</small></span><span class="workspace-arrow">⌄</span></div>
+      <div class="workspace"><span class="workspace-icon"><img src="brand/app-icon.svg" alt="" aria-hidden="true"/></span><span><b>TECHNET</b><small>Operações Telecom</small></span><span class="workspace-arrow">⌄</span></div>
       <div class="nav-caption">GERENCIAMENTO</div>
       <nav id="nav">
         <a class="nav-link active" data-route="dashboard" href="#dashboard"><span data-icon="layout-dashboard"></span>Visão geral</a>
@@ -53,7 +54,7 @@
     </aside>
     <div class="main-column">
       <header class="topbar">
-        <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb">TECHNET</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
+        <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb">SST · TECHNET</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
         <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Autenticando</span><button class="icon-button" title="Alternar tema" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button><span class="header-avatar">T</span></div>
       </header>
       <main class="content" id="content"><div class="loading-panel">Carregando TECHNET SST…</div></main>
