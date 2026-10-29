@@ -122,3 +122,7 @@ Crit√©rios preservados da planilha:
 Dados pessoais permanecem somente no arquivo privado e no Firestore protegido ap√≥s confirma√ß√£o do administrador. N√£o publicar o JSON privado no GitHub.
 
 Publica√ß√£o: altera√ß√µes no GitHub n√£o s√£o deploy autom√°tico do Firebase Hosting. Ap√≥s sincronizar o c√≥digo, executar firebase deploy --only hosting --project technet-sst-2026. A eventual migra√ß√£o futura para Supabase requer nova implementa√ß√£o com RLS.
+
+## Mapa corporal anatÙmico (vista posterior)
+
+A vista posterior do dashboard usa uma ilustraÁ„o anatÙmica otimizada em `public/assets/corpo-anatomico-posterior.webp`, combinada com regiıes SVG interativas em `public/mapa-corporal.js`. As cores das zonas s„o calculadas dinamicamente a partir dos acidentes registrados no Firestore: a imagem n„o contÈm contagens ou cores fixas. … possÌvel selecionar regiıes por clique ou teclado, filtrar perÌodo/unidade e alternar para a vista frontal, que conserva o desenho vetorial existente. A vista posterior È exibida por padr„o. N„o alterar valores de acidentes ou dados pessoais para fazer ajustes visuais.

@@ -3,7 +3,7 @@ import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged} f
 import {getFirestore,collection,getDocs,addDoc,updateDoc,deleteDoc,doc,getDoc} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 import {setupLibrary,renderLibrary,loadLibrary,clearLibrary,libraryStats,libraryProgramas,libraryEvidencias} from "./biblioteca.js";
 import {setupUserAdmin,renderUserAdmin,loadUserAdmin,resetUserAdmin} from "./usuarios-admin.js";
-import {renderBodyMap,setupBodyMap,bodyFields,BODY_AREAS,regionsOf} from "./mapa-corporal.js";
+import {renderBodyMap,setupBodyMap,bodyFields,BODY_AREAS,regionsOf} from "./mapa-corporal.js?v=20261029-anatomia-realista";
 import {renderPgrDashboard,loadPgrIndicators,clearPgrIndicators} from "./pgr-dashboard.js";
 import {renderAccidentImportButton,setupAccidentImport,renderAccidentIndicators} from "./importar-acidentes.js";
 

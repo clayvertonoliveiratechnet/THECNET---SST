@@ -10,7 +10,7 @@ export const BODY_AREAS=[
 const nameById=Object.fromEntries(BODY_AREAS);
 const L=(str)=>String(str??"").trim().toLocaleLowerCase("pt-BR");
 const sanitize=str=>String(str??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const state={view:"frente",period:"todos",unit:"todas",region:""};
+const state={view:"costas",period:"todos",unit:"todas",region:""};
 let records=[];
 export function accidentOnly(r){const type=L(r.tipo);return type==="acidente"||type==="acidente do trabalho"||type==="acidente de trabalho";}
 export function regionsOf(r){if(!r)return [];if(Array.isArray(r.partesCorpo))return [...new Set(r.partesCorpo)].filter(v=>nameById[v]);const raw=r.parteCorpo||r.partesCorpo||"";return String(raw).split(/[,;]/).map(v=>v.trim()).filter(v=>nameById[v]);}
@@ -25,7 +25,48 @@ function filtered(){
 }
 function bucket(n,max){return n===0?0:Math.max(1,Math.ceil(n/Math.max(1,max)*4));}
 function zone(name,shape,counts,max){const num=counts[name]||0,level=bucket(num,max);return '<g tabindex="0" role="button" aria-label="'+sanitize(nameById[name])+': '+num+' acidentes" data-body-region="'+name+'" class="body-zone zone-'+level+(state.region===name?' is-selected':'')+'"><title>'+sanitize(nameById[name])+': '+num+' acidente(s)</title>'+shape+'</g>';}
+// Vista posterior realista: corpo anatômico neutro + camadas SVG dinâmicas.
+const ANATOMY_ASSET="/assets/corpo-anatomico-posterior.webp";
+function posteriorSvg(counts){
+ const max=Math.max(1,...Object.values(counts));
+ const z=(key,path)=>{
+  const n=counts[key]||0,level=bucket(n,max);
+  return '<g data-body-region="'+key+'" role="button" tabindex="0" class="anatomy-zone heat-'+level+(state.region===key?' is-selected':'')+'" aria-label="'+sanitize(nameById[key])+': '+n+' acidente(s)"><title>'+sanitize(nameById[key])+': '+n+' acidente(s)</title>'+path+'</g>';
+ };
+ const p=d=>'<path d="'+d+'" />';
+ return '<svg class="body-figure is-realistic" viewBox="0 0 320 676" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Mapa corporal anatômico posterior, selecione uma região">'+
+ '<defs><mask id="sst-body-mask-posterior" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type:alpha"><image href="'+ANATOMY_ASSET+'" width="320" height="650" /></mask></defs>'+
+ '<image class="anatomy-base" href="'+ANATOMY_ASSET+'" width="320" height="650" preserveAspectRatio="xMidYMid meet" />'+
+ '<g mask="url(#sst-body-mask-posterior)" class="anatomy-regions">'+
+ z("cabeca",'<ellipse cx="159" cy="41" rx="34" ry="44"/>')+
+ z("pescoco",p("M145 77 Q158 90 175 77 L181 116 Q159 134 137 116 Z"))+
+ z("ombro",p("M123 105 Q100 105 78 119 Q58 136 60 159 L98 171 Q109 150 135 138 L143 117 Z")+
+                  p("M197 105 Q220 105 242 119 Q262 136 260 159 L222 171 Q211 150 185 138 L177 117 Z"))+
+ z("costas",p("M124 124 Q139 129 157 122 L163 239 Q141 244 107 231 L101 174 Q106 138 124 124 Z")+
+                 p("M196 124 Q180 129 163 122 L157 239 Q179 244 213 231 L219 174 Q214 138 196 124 Z"))+
+ z("coluna",p("M153 125 Q160 117 167 125 L169 280 Q162 298 153 280 Z"))+
+ z("torax",p("M101 184 Q114 203 149 203 L150 236 Q130 244 110 232 Z")+
+                p("M219 184 Q206 203 171 203 L170 236 Q190 244 210 232 Z"))+
+ z("abdomen",p("M110 239 Q135 246 153 242 L153 298 L109 310 Z")+
+                 p("M210 239 Q185 246 167 242 L167 298 L211 310 Z"))+
+ z("braco",p("M61 151 Q85 144 97 161 Q88 214 76 250 Q59 253 44 242 Q53 202 61 151 Z")+
+                p("M259 151 Q235 144 223 161 Q232 214 244 250 Q261 253 276 242 Q267 202 259 151 Z"))+
+ z("antebraco",p("M44 239 Q62 244 77 253 Q72 300 46 346 Q29 352 15 340 Q27 292 44 239 Z")+
+                    p("M276 239 Q258 244 243 253 Q248 300 274 346 Q291 352 305 340 Q293 292 276 239 Z"))+
+ z("mao",p("M15 335 Q28 340 46 343 L45 375 Q36 410 21 417 Q5 406 3 384 Z")+
+               p("M305 335 Q292 340 274 343 L275 375 Q284 410 299 417 Q315 406 317 384 Z"))+
+ z("quadril",p("M114 288 Q138 295 160 290 Q183 295 206 288 L215 359 Q198 390 162 375 Q125 390 105 359 Z"))+
+ z("coxa",p("M113 365 Q137 376 156 371 L153 468 Q151 486 118 483 Q99 450 101 406 Z")+
+                p("M207 365 Q183 376 164 371 L167 468 Q169 486 202 483 Q221 450 219 406 Z"))+
+ z("joelho",'<ellipse cx="132" cy="489" rx="26" ry="22"/><ellipse cx="188" cy="489" rx="26" ry="22"/>')+
+ z("perna",p("M113 506 Q132 510 152 505 L144 595 Q143 610 117 611 Q104 570 108 537 Z")+
+                 p("M207 506 Q188 510 168 505 L176 595 Q177 610 203 611 Q216 570 212 537 Z"))+
+ z("pe",p("M117 605 Q133 616 145 605 L158 647 Q133 660 96 653 Q103 627 117 605 Z")+
+              p("M203 605 Q187 616 175 605 L162 647 Q187 660 224 653 Q217 627 203 605 Z"))+
+ '</g><text x="160" y="669" class="body-svg-caption" text-anchor="middle">VISTA POSTERIOR</text></svg>';
+}
 function svg(counts){
+ if(state.view==="costas")return posteriorSvg(counts);
  const max=Math.max(1,...Object.values(counts));
  const z=(n,shape)=>zone(n,shape,counts,max);
  const front=state.view==="frente";

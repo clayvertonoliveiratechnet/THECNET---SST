@@ -357,3 +357,56 @@ body.dark .body-legend .zone-0{background:#445467}
 .sst-indicadores-foot{font-size:11px!important}
 @media(max-width:800px){.sst-indicadores-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:450px){.sst-import-dialog{width:calc(100% - 18px);padding:19px}.sst-indicadores-2026{padding:17px}.sst-indicadores-grid{gap:8px}.sst-indicadores-grid>div{padding:11px}.sst-indicadores-grid strong{font-size:21px}}
+
+/* Mapa anatômico realista: imagem neutra com regiões interativas de calor */
+.body-figure.is-realistic{
+  display:block;
+  flex:none;
+  width:min(100%,330px);
+  height:auto;
+  max-height:none;
+  aspect-ratio:320/676;
+  overflow:visible;
+}
+.body-figure.is-realistic .anatomy-zone{cursor:pointer;outline:none}
+.body-figure.is-realistic .anatomy-zone > path,
+.body-figure.is-realistic .anatomy-zone > ellipse{
+  stroke:rgba(255,255,255,.37);
+  stroke-width:.6;
+  stroke-linejoin:round;
+  fill-opacity:0;
+  transition:fill .22s ease,fill-opacity .22s ease,stroke .22s ease;
+}
+.body-figure.is-realistic .heat-1 > path,
+.body-figure.is-realistic .heat-1 > ellipse{fill:#4ac6ad;fill-opacity:.58}
+.body-figure.is-realistic .heat-2 > path,
+.body-figure.is-realistic .heat-2 > ellipse{fill:#f2c56c;fill-opacity:.62}
+.body-figure.is-realistic .heat-3 > path,
+.body-figure.is-realistic .heat-3 > ellipse{fill:#f39858;fill-opacity:.69}
+.body-figure.is-realistic .heat-4 > path,
+.body-figure.is-realistic .heat-4 > ellipse{fill:#e74f60;fill-opacity:.74}
+.body-figure.is-realistic .anatomy-zone:hover > path,
+.body-figure.is-realistic .anatomy-zone:hover > ellipse,
+.body-figure.is-realistic .anatomy-zone:focus-visible > path,
+.body-figure.is-realistic .anatomy-zone:focus-visible > ellipse,
+.body-figure.is-realistic .anatomy-zone.is-selected > path,
+.body-figure.is-realistic .anatomy-zone.is-selected > ellipse{
+  stroke:#0b9b89;
+  stroke-width:2;
+  fill-opacity:.76;
+}
+.body-figure.is-realistic .anatomy-zone.heat-0:hover > path,
+.body-figure.is-realistic .anatomy-zone.heat-0:hover > ellipse,
+.body-figure.is-realistic .anatomy-zone.heat-0:focus-visible > path,
+.body-figure.is-realistic .anatomy-zone.heat-0:focus-visible > ellipse,
+.body-figure.is-realistic .anatomy-zone.heat-0.is-selected > path,
+.body-figure.is-realistic .anatomy-zone.heat-0.is-selected > ellipse{
+  fill:#4ac6ad;
+  fill-opacity:.23;
+}
+.body-visual:has(.is-realistic) {justify-content:flex-start;gap:10px;padding:18px 14px;background:radial-gradient(circle at 50% 31%,rgba(224,234,242,.5),transparent 65%),var(--bg)}
+.body-visual:has(.is-realistic) .body-legend{margin-top:4px}
+.body-figure.is-realistic .body-svg-caption{font-size:10px;font-weight:800;letter-spacing:1px}
+@media(max-width:720px){
+ .body-figure.is-realistic{width:min(100%,295px);height:auto;max-height:none}
+}
