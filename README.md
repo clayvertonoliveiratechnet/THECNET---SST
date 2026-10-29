@@ -95,3 +95,30 @@ Os quantitativos da planilha INFORMAÇOES PGR 2026.xlsx são somas de QT por fun
 - Controle PGR indica RDT Revisão 002 e o PDF atual do ZIP é Rev.3.
 
 Para mapa de acidentes, o tipo precisa ser Acidente no registro de incidentes. Os campos adicionais permitem registrar regiões, natureza da lesão, afastamento, dias perdidos, CAT e unidade. Acidentes afetam o total uma vez, mas podem contribuir para várias regiões do corpo. O mapa frontal/posterior tem filtros por período e unidade. PGR não alimenta número de acidentes e não são apresentadas taxas de frequência/gravididade sem horas trabalhadas.
+
+
+## Importação de indicadores de acidentes — planilha 2026
+
+O módulo Incidentes oferece **Importar indicadores 2026** exclusivamente a administradores. A importação usa um JSON privado convertido da planilha INDICADORES_DE_ACIDENTES-SST.xlsx. Nenhum nome nem relato de acidente deve ser adicionado ao repositório GitHub público.
+
+Procedimento:
+1. Baixar o arquivo privado INDICADORES_DE_ACIDENTES_TECHNET_IMPORTACAO_PRIVADA.json gerado nesta conversa.
+2. Autenticar-se como administrador no TECHNET SST.
+3. Acessar Incidentes > Importar indicadores 2026.
+4. Selecionar o JSON, conferir os totais e clicar em Confirmar importação.
+5. Conferir os oito registros em Incidentes e o resumo HHT/TF/TG no dashboard.
+
+A importação grava acidentes na coleção protegida incidentes, usando IDs determinísticos para evitar duplicações. Também compara data, colaborador e unidade com registros preexistentes. Os 12 registros mensais de HHT e o resumo ficam no documento protegido evidencias/indicadores-acidentes-sst-2026. Os registros já cadastrados não são substituídos automaticamente.
+
+Critérios preservados da planilha:
+- 8 acidentes (7 com afastamento, 1 sem); HHT total 272.867.
+- TF = 7 × 1.000.000 / 272.867 = 25,65.
+- TG = (24 dias perdidos + 24 dias debitados) × 1.000.000 / 272.867 = 175,91.
+- Um registro de dias perdidos permanece nulo, e não zero.
+- Costas / Coluna é exibido em duas regiões do mapa, mas continua sendo um acidente.
+- Múltiplas partes permanece sem região atribuída até detalhamento.
+- Tornozelo é agrupado em Pés, por não existir área própria no mapa, com observação da aproximação.
+
+Dados pessoais permanecem somente no arquivo privado e no Firestore protegido após confirmação do administrador. Não publicar o JSON privado no GitHub.
+
+Publicação: alterações no GitHub não são deploy automático do Firebase Hosting. Após sincronizar o código, executar firebase deploy --only hosting --project technet-sst-2026. A eventual migração futura para Supabase requer nova implementação com RLS.
