@@ -55,6 +55,10 @@ service cloud.firestore {
       allow create, update: if admin() && validInvitation(email);
       allow delete: if admin();
     }
+    match /importacoesPlanilhas/{id} {
+      allow get, list, create: if admin();
+      allow update, delete: if false;
+    }
     match /{collection}/{docId} {
       allow read: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst','pgrIndicadores'] && member();
       allow create: if collection in ['incidentes','inspecoes','epis','treinamentos','acoes','colaboradores','evidencias','programasSst','pgrIndicadores']

@@ -410,3 +410,38 @@ body.dark .body-legend .zone-0{background:#445467}
 @media(max-width:720px){
  .body-figure.is-realistic{width:min(100%,295px);height:auto;max-height:none}
 }
+
+/* Evidências coletivas SST e atualização controlada de planilhas */
+#lib-fields .evi-type {grid-column:1/-1}
+#lib-fields .evi-collective-block{display:grid;grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;min-width:0;padding:16px;background:var(--bg);border:1px solid var(--border);border-radius:11px}
+#lib-fields .evi-collective-block[hidden]{display:none!important}
+#lib-fields .evi-collective-block .form-field{min-width:0}
+#lib-fields .evi-collective-block .form-field.wide{grid-column:1/-1}
+#lib-fields .evi-collective-block input[type=file]{width:100%;min-width:0;box-sizing:border-box}
+#lib-fields .evi-collective-block textarea{width:100%;box-sizing:border-box;min-height:96px}
+#lib-fields .evi-person-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:208px;overflow-y:auto;padding:4px}
+#lib-fields .evi-person{display:flex;align-items:center;min-width:0;gap:8px;padding:10px;border:1px solid var(--border);border-radius:9px;background:var(--surface);font-size:11px;line-height:1.5;cursor:pointer;color:var(--text)}
+#lib-fields .evi-person input[type=checkbox]{appearance:auto;accent-color:var(--primary);display:inline-block;min-width:17px;max-width:17px;width:17px;min-height:17px;max-height:17px;height:17px;margin:0;padding:0;flex:0 0 17px}
+#lib-fields .evi-person span{min-width:0;flex:1;overflow-wrap:anywhere}
+#lib-fields .evi-person small{color:var(--text2);font-size:9px;white-space:nowrap}
+#lib-fields .evi-person:has(input:checked){border-color:var(--primary);background:color-mix(in srgb,var(--primary) 7%,var(--surface))}
+#lib-fields .evi-template-line{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+#lib-fields .evi-template-line small{font-size:11px;color:var(--text2)}
+#lib-fields .evi-person-empty{font-size:11px;color:var(--text2)}
+#lib-fields .evi-collective-block .form-field small{font-size:10px;line-height:1.55;color:var(--text2);margin-top:5px}
+#lib-dialog{max-height:calc(100dvh - 24px);overflow:auto}
+.sheet-dialog{width:min(650px,calc(100% - 22px));max-height:calc(100dvh - 25px);overflow-y:auto}
+.sheet-help{font-size:12px;line-height:1.65;color:var(--text2)}
+.sheet-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0}
+.sheet-actions input[type=file]{flex:1 1 220px;min-width:0;border:1px dashed var(--border);border-radius:9px;background:var(--bg);padding:10px;font-size:11px;color:var(--text)}
+.sheet-counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.sheet-counts>span{display:flex;flex-direction:column;align-items:center;padding:13px 7px;border-radius:9px;border:1px solid var(--border);color:var(--text2);font-size:10px}
+.sheet-counts b{color:var(--primary);font:800 23px Manrope,sans-serif}
+#sheet-preview{font-size:12px;line-height:1.7;color:var(--text2)}
+#sheet-preview strong{color:var(--text)}
+#sheet-preview details{border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin:10px 0}
+#sheet-preview summary{font-size:11px;cursor:pointer;font-weight:800;color:var(--text)}
+#sheet-preview ul{font-size:11px;line-height:1.6;padding-left:22px}
+.sheet-warnings{background:#fff6e6;color:#aa731c!important;border-radius:9px;padding:10px}
+#sheet-status.is-error{color:#bf4458}
+@media(max-width:720px){#lib-fields .evi-collective-block{grid-template-columns:minmax(0,1fr);padding:11px}#lib-fields .evi-collective-block .form-field.wide{grid-column:auto}#lib-fields .evi-person-list{grid-template-columns:minmax(0,1fr)}.sheet-actions{flex-direction:column;align-items:stretch}.sheet-actions input[type=file]{flex:auto;width:100%}}
