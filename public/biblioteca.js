@@ -50,6 +50,7 @@ document.addEventListener("change",ev=>{if(ev.target.id==="lib-category"){state.
 }
 export async function loadLibrary(){if(!services)return;const {db}=services;const rs=await Promise.all([getDocs(collection(db,"evidencias")),getDocs(collection(db,"programasSst"))]);state.evidencias=rs[0].docs.map(d=>({id:d.id,...d.data()}));state.programas=rs[1].docs.map(d=>({id:d.id,...d.data()}));}
 export function libraryProgramas(){return state.programas.slice();}
+export function libraryEvidencias(){return state.evidencias.slice();}
 export function libraryStats(){
  const pgr=state.programas.filter(r=>r.tipo==="PGR");
  return {totalPgr:pgr.length,vigentes:pgr.filter(r=>r.status==="Vigente").length,evidencias:state.evidencias.length};
