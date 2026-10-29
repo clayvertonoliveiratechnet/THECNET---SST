@@ -336,3 +336,24 @@ body.dark .body-legend .zone-0{background:#445467}
   #record-dialog .body-checkboxes{grid-template-columns:minmax(0,1fr);gap:7px;}
   #record-dialog .form-field .body-checkboxes label{padding:10px 12px;}
 }
+
+/* Importação de acidentes e indicadores SST */
+.sst-import-dialog{max-width:620px;max-height:calc(100dvh - 30px);overflow-y:auto}
+.sst-import-helper{font-size:12px;line-height:1.7;color:var(--text2)}
+.sst-import-dialog input[type=file]{display:block;box-sizing:border-box;width:100%;min-width:0;margin:16px 0;padding:14px;background:var(--bg);border:1px dashed var(--border);border-radius:10px;font-size:12px;color:var(--text)}
+.sst-import-preview{margin-top:12px;padding:15px;border-radius:10px;background:var(--bg);border:1px solid var(--border);font-size:12px;line-height:1.75;color:var(--text2)}
+.sst-import-preview:empty{display:none}
+.sst-import-preview strong{color:var(--text)}
+.sst-import-preview p{margin:7px 0}
+.sst-import-status{font-size:12px;line-height:1.65;color:var(--text2)}
+.sst-import-status.is-error{color:var(--red)}
+.sst-indicadores-2026{padding:22px 24px;margin-top:20px}
+.sst-indicadores-2026 h2{font:800 18px Manrope,sans-serif;color:var(--text);margin:5px 0 7px}
+.sst-indicadores-2026 p{color:var(--text2);font-size:12px;line-height:1.6;margin:5px 0}
+.sst-indicadores-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+.sst-indicadores-grid>div{border:1px solid var(--border);background:var(--bg);padding:16px;border-radius:10px;min-width:0}
+.sst-indicadores-grid strong{display:block;color:var(--text);font:800 23px Manrope,sans-serif}
+.sst-indicadores-grid span{display:block;font-size:10px;color:var(--text2);margin-top:7px}
+.sst-indicadores-foot{font-size:11px!important}
+@media(max-width:800px){.sst-indicadores-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:450px){.sst-import-dialog{width:calc(100% - 18px);padding:19px}.sst-indicadores-2026{padding:17px}.sst-indicadores-grid{gap:8px}.sst-indicadores-grid>div{padding:11px}.sst-indicadores-grid strong{font-size:21px}}
