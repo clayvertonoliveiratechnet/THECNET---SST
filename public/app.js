@@ -7,13 +7,15 @@ import {renderBodyMap,setupBodyMap,bodyFields,BODY_AREAS,regionsOf} from "./mapa
 import {renderPgrDashboard,loadPgrIndicators,clearPgrIndicators} from "./pgr-dashboard.js";
 import {renderAccidentImportButton,setupAccidentImport,renderAccidentIndicators} from "./importar-acidentes.js";
 import {setupSpreadsheetUpdates,renderSpreadsheetButton} from "./planilhas-sst.js";
+import {setupSignatureManager,loadSignatureSessions,clearSignatureSessions,renderSignaturePage} from "./assinaturas.js";
+import {setupPublicSigning,isPublicSigningRoute,renderPublicSigning} from "./assinatura-publica.js";
 
 const config={apiKey:"AIzaSyCxm8bh7KLU2QQUEdED71xyO2GjhZsBs1s",authDomain:"technet-sst-2026.firebaseapp.com",projectId:"technet-sst-2026",storageBucket:"technet-sst-2026.firebasestorage.app",messagingSenderId:"276807543932",appId:"1:276807543932:web:adca9a2ab35b8644e22df9"};
 const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
 provider.setCustomParameters({prompt:"select_account"});
 const OWNER="clayvertonoliveira@gmail.com";
 const $=s=>document.querySelector(s),keys=["incidentes","inspecoes","epis","treinamentos","acoes","colaboradores"];
-const names={dashboard:"Visão geral",incidentes:"Incidentes",inspecoes:"Inspeções",epis:"Controle de EPIs",treinamentos:"Treinamentos",acoes:"Ações corretivas",colaboradores:"Colaboradores",relatorios:"Relatórios",evidencias:"Evidências",programas:"Programas e laudos",usuarios:"Gestão de usuários"};
+const names={dashboard:"Visão geral",incidentes:"Incidentes",inspecoes:"Inspeções",epis:"Controle de EPIs",treinamentos:"Treinamentos",acoes:"Ações corretivas",colaboradores:"Colaboradores",relatorios:"Relatórios",evidencias:"Evidências",assinaturas:"Assinaturas eletrônicas",programas:"Programas e laudos",usuarios:"Gestão de usuários"};
 const descriptions={incidentes:"Registre acidentes, quase acidentes e condições inseguras.",inspecoes:"Acompanhe vistorias de campo e verificações de conformidade.",epis:"Controle entregas, substituições e validade dos EPIs.",treinamentos:"Gerencie capacitações e reciclagens NR.",acoes:"Gerencie responsáveis, prazos e ações preventivas.",colaboradores:"Organize a equipe técnica por função e setor."};
 const specs={
  incidentes:[["titulo","Ocorrência","text",true],["tipo","Tipo","select","Acidente|Quase acidente|Condição insegura|Incidente"],["data","Data","date",true],["setor","Setor","select","Campo|MDU|Construção|Técnico|Comercial|Administrativo"],["responsavel","Responsável","text",true],["gravidade","Gravidade","select","Baixa|Média|Alta|Crítica"],["status","Status","select","Aberto|Em análise|Resolvido"],["descricao","Descrição","textarea"]],
@@ -129,7 +131,7 @@ function render(){
  $("#breadcrumb-current").textContent=names[current];
  document.querySelectorAll("[data-route]").forEach(el=>el.classList.toggle("active",el.dataset.route===current));
  $("#pending-badge").textContent=data.acoes.filter(x=>x.status!=="Concluída").length;
- $("#content").innerHTML=current==="dashboard"?home():current==="relatorios"?reports():current==="usuarios"?renderUserAdmin():["evidencias","programas"].includes(current)?renderLibrary(current):listing(current);
+ $("#content").innerHTML=current==="dashboard"?home():current==="relatorios"?reports():current==="usuarios"?renderUserAdmin():current==="assinaturas"?renderSignaturePage():["evidencias","programas"].includes(current)?renderLibrary(current):listing(current);
  icons();header();
 }
 
@@ -144,7 +146,7 @@ async function refresh(version=sessionVersion){
   return [k,snap.docs.map(record=>({...record.data(),id:record.id}))];
  }));
  if(auth.currentUser?.uid!==expectedUid||version!==sessionVersion)return;
- await Promise.all([loadLibrary(),loadPgrIndicators(db)]);
+ await Promise.all([loadLibrary(),loadPgrIndicators(db),loadSignatureSessions()]);
  if(auth.currentUser?.uid!==expectedUid||version!==sessionVersion){clearLibrary();return;}
  data=Object.fromEntries(entries);
  mode="cloud";
@@ -217,6 +219,9 @@ async function login(){
 setupLibrary({db,auth,getCtx:()=>({mode,user,role}),toast,rerender:render,getCollaborators:()=>data.colaboradores});
 setupAccidentImport({db,getCtx:()=>({mode,user,role}),toast,afterImport:()=>refresh()});
 setupSpreadsheetUpdates({db,auth,getCtx:()=>({mode,user,role}),toast,refresh:()=>refresh()});
+setupSignatureManager({db,auth,getCtx:()=>({mode,user,role}),toast,rerender:render,
+ collaborators:()=>data.colaboradores,evidences:()=>libraryEvidencias()});
+setupPublicSigning({db});
 setupBodyMap();
 setupUserAdmin({db,auth,getCtx:()=>({mode,user,role}),toast,rerender:render,
  getCollaborators:()=>data.colaboradores,
@@ -230,6 +235,7 @@ async function bootstrap(currentUser){
  const version=++sessionVersion;
  clearLibrary();
  clearPgrIndicators();
+ clearSignatureSessions();
  resetUserAdmin();
  data=emptyData();
  user=currentUser;
@@ -274,7 +280,7 @@ onAuthStateChanged(auth,bootstrap,err=>{
  console.error("Falha ao validar sessão Firebase",err);
  ++sessionVersion;
  user=null;role="leitura";mode="error";
- data=emptyData();clearLibrary();clearPgrIndicators();resetUserAdmin();
+ data=emptyData();clearLibrary();clearPgrIndicators();clearSignatureSessions();resetUserAdmin();
  accessError="Falha ao validar a sessão do Firebase. Tente recarregar a página.";
  render();
 });

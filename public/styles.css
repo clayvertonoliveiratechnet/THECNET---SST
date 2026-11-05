@@ -445,3 +445,65 @@ body.dark .body-legend .zone-0{background:#445467}
 .sheet-warnings{background:#fff6e6;color:#aa731c!important;border-radius:9px;padding:10px}
 #sheet-status.is-error{color:#bf4458}
 @media(max-width:720px){#lib-fields .evi-collective-block{grid-template-columns:minmax(0,1fr);padding:11px}#lib-fields .evi-collective-block .form-field.wide{grid-column:auto}#lib-fields .evi-person-list{grid-template-columns:minmax(0,1fr)}.sheet-actions{flex-direction:column;align-items:stretch}.sheet-actions input[type=file]{flex:auto;width:100%}}
+
+/* Assinaturas eletrônicas SST · gestão e coleta pessoal */
+.sign-info{padding:20px 24px;line-height:1.65;margin-bottom:20px;color:var(--text)}
+.sign-info p{margin:6px 0 0;color:var(--text2);font-size:12px}
+.sign-sessions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.sign-session{min-width:0;padding:19px;display:flex;flex-direction:column;gap:13px}
+.sign-session h3{font:800 15px Manrope,sans-serif;margin:0;line-height:1.4;color:var(--text)}
+.sign-session p{color:var(--text2);font-size:12px;line-height:1.5;margin:0}
+.sign-session small{color:var(--text2);font-size:11px;line-height:1.5;margin-top:auto}
+.sign-session>.btn{align-self:flex-start}
+.sign-session-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sign-empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--text2);font-size:13px}
+.sign-modal{max-height:calc(100dvh - 28px);overflow-y:auto;width:min(730px,calc(100% - 24px))}
+.sign-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:17px 0}
+.sign-form-grid label{display:flex;flex-direction:column;min-width:0;gap:6px;color:var(--text);font-weight:700;font-size:11px}
+.sign-form-grid label.wide,.sign-form-grid .wide{grid-column:1/-1}
+.sign-form-grid input,.sign-form-grid select,.sign-form-grid textarea{width:100%;min-width:0;box-sizing:border-box;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);font-size:12px;padding:11px;font-family:inherit}
+.sign-form-grid label small{font-size:10px;color:var(--text2);font-weight:400;line-height:1.45}
+.sign-description{color:var(--text2);font-size:12px;line-height:1.6}
+.sign-counts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}
+.sign-counts>div{display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
+.sign-counts b{font:800 24px Manrope,sans-serif;color:var(--primary)}
+.sign-counts span{font-size:11px;color:var(--text2)}
+.sign-table-scroll{overflow:auto;max-height:340px;margin:15px 0;border:1px solid var(--border);border-radius:9px}
+.sign-table-scroll .lib-table{min-width:570px}
+.sign-report-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:13px 0}
+.sign-report-actions label{color:var(--text2);font-size:11px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.sign-report-actions input{font-size:11px;max-width:280px}
+.sign-manager-status{font-size:11px;color:var(--text2);line-height:1.6}
+#sig-create-status{font-size:12px;color:var(--text2);line-height:1.6}
+/* Pagina pública por URL com token aleatório; a navegação privada fica isolada */
+#signature-public-root{position:fixed;inset:0;z-index:5000;overflow:auto;background:#edf3f7;color:#102b48;padding:25px 12px;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+#signature-public-root[hidden]{display:none!important}
+body.signature-public-active{overflow:hidden}
+.sign-guest-card{background:#fff;max-width:590px;margin:10px auto 35px;padding:28px;border:1px solid #dce7ef;box-shadow:0 16px 55px #16355318;border-radius:18px}
+.sign-guest-head{display:flex;align-items:center;gap:11px;margin-bottom:23px}
+.sign-guest-head strong{display:block;font-size:17px;font-weight:800}
+.sign-guest-head small{display:block;color:#667b8e;font-size:11px;margin-top:3px}
+.sign-guest-shield{background:#0f947f;color:#fff;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:19px}
+.sign-guest-tag{font-size:10px;font-weight:900;color:#0b937d;letter-spacing:1.2px}
+.sign-guest-card h1{font-size:24px;line-height:1.3;margin:12px 0}
+.sign-guest-description{color:#5a6c7d;font-size:13px;line-height:1.65}
+.sign-guest-summary{background:#f3f7f9;border:1px solid #e0e9ee;border-radius:11px;padding:8px 16px;margin:18px 0}
+.sign-guest-summary>div{display:flex;gap:14px;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e4ecf0;line-height:1.5}
+.sign-guest-summary>div:last-child{border:0}
+.sign-guest-summary dt{color:#64788a;font-size:12px}
+.sign-guest-summary dd{margin:0;text-align:right;max-width:64%;font-size:12px;font-weight:650;overflow-wrap:anywhere}
+.sign-guest-note{background:#fff8e8;border-left:3px solid #dea14a;padding:12px;font-size:12px;color:#7d5517;line-height:1.6}
+.sign-guest-check{display:flex;align-items:flex-start;gap:10px;padding:11px 0;font-size:12px;line-height:1.6;cursor:pointer}
+.sign-guest-check input{flex:0 0 18px;appearance:auto;width:18px;height:18px;margin:1px 0;accent-color:#0a987e}
+.sign-guest-canvas-label{display:block;font-weight:800;font-size:12px;margin:17px 0 8px}
+.sign-guest-pad{background:#fcfefe;border:1px solid #b6c8d5;border-radius:12px;overflow:hidden;padding:5px;position:relative}
+.sign-guest-pad canvas{display:block;width:100%;height:180px;touch-action:none;cursor:crosshair}
+.sign-guest-baseline{pointer-events:none;position:absolute;bottom:10px;left:12px;font-size:8px;color:#adbcc7;letter-spacing:1px}
+.sign-guest-buttons{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:15px}
+.sign-guest-buttons .btn{min-height:41px}
+.sign-guest-success{padding:18px;background:#e9f8f3;border:1px solid #b4dcca;border-radius:10px;color:#137459;margin:18px 0}
+.sign-guest-success p{font-size:12px;line-height:1.5}
+.sign-guest-footer{font-size:10px;color:#738899;line-height:1.6;border-top:1px solid #e5edf2;margin-top:20px;padding-top:15px}
+#sign-feedback{font-size:12px;color:#375d77;min-height:15px}
+@media(max-width:850px){.sign-sessions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.sign-sessions{grid-template-columns:1fr}.sign-form-grid{grid-template-columns:1fr}.sign-form-grid label.wide,.sign-form-grid .wide{grid-column:auto}.sign-guest-card{padding:18px;margin:0 auto 26px}.sign-guest-card h1{font-size:21px}.sign-guest-summary dd{max-width:62%}.sign-guest-pad canvas{height:150px}.sign-report-actions{flex-direction:column;align-items:flex-start}}

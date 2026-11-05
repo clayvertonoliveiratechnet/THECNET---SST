@@ -55,6 +55,53 @@ service cloud.firestore {
       allow create, update: if admin() && validInvitation(email);
       allow delete: if admin();
     }
+    // As sessoes e convites sao privados. Links de 192 bits permitem SOMENTE
+    // consultar seu proprio convite e registrar uma unica assinatura.
+    match /assinaturaSessoes/{sid} {
+      allow get, list: if member();
+      allow create: if manager()
+        && request.resource.data.keys().hasAll(['titulo','tema','data','quantidade','status','criadoPor'])
+        && request.resource.data.status == 'Aberta'
+        && request.resource.data.quantidade is int
+        && request.resource.data.quantidade > 0
+        && request.resource.data.quantidade <= 100
+        && request.resource.data.criadoPor == request.auth.uid;
+      allow update: if manager()
+        && resource.data.status == 'Aberta'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','encerradoEm'])
+        && request.resource.data.status == 'Encerrada'
+        && request.resource.data.encerradoEm == request.time;
+      allow delete: if false;
+    }
+    match /assinaturaConvites/{token} {
+      allow get: if token.matches('^[a-f0-9]{48}$');
+      allow list: if manager();
+      allow create: if manager()
+        && token.matches('^[a-f0-9]{48}$')
+        && request.resource.data.keys().hasAll(['sessaoId','nome','funcao','ordem','assinadoEm','assinaturaData','aceite'])
+        && request.resource.data.nome is string
+        && request.resource.data.nome.size() >= 3
+        && request.resource.data.nome.size() < 150
+        && request.resource.data.assinadoEm == null
+        && request.resource.data.assinaturaData == null
+        && request.resource.data.aceite == false
+        && request.resource.data.sessaoId is string
+        && request.resource.data.sessaoId.size() > 10;
+      allow update: if token.matches('^[a-f0-9]{48}$')
+        && resource.data.assinadoEm == null
+        && get(/databases/$(database)/documents/assinaturaSessoes/$(resource.data.sessaoId)).data.status == 'Aberta'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['assinadoEm','assinaturaData','assinaturaNome','hashAssinatura','aceite'])
+        && request.resource.data.assinadoEm == request.time
+        && request.resource.data.assinaturaNome == resource.data.nome
+        && request.resource.data.aceite == true
+        && request.resource.data.assinaturaData is string
+        && request.resource.data.assinaturaData.size() > 200
+        && request.resource.data.assinaturaData.size() < 75000
+        && request.resource.data.assinaturaData.matches('^data:image/png;base64,[A-Za-z0-9+/=]+$')
+        && request.resource.data.hashAssinatura is string
+        && request.resource.data.hashAssinatura.matches('^[a-f0-9]{64}$');
+      allow delete: if false;
+    }
     match /importacoesPlanilhas/{id} {
       allow get, list, create: if admin();
       allow update, delete: if false;
