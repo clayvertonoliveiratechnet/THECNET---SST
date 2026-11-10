@@ -1,27 +1,19 @@
-# SST TECHNET — Identidade visual v2
+# TECHNET — identidade oficial aplicada ao SST
 
-Revisão premium baseada na referência dos círculos concêntricos e na prancha visual validada no projeto.
+Fonte visual: `TECHNET - LOGO COMPLETA-1.pdf` (material recebido em 10/11/2026).
+A página 3 apresenta o símbolo de círculos concêntricos e o logotipo **technet** em minúsculas. O vermelho do vetor é `#E20612` e o cinza grafite é `#4D4D4D`.
 
-## Marca
-- **Símbolo:** órbitas de monitoramento e proteção, com três nós de conexão; traços segmentados e centro vazado
-- **Assinatura:** SST TECHNET — Saúde e Segurança do Trabalho
-- **Conceito:** Segurança em cada camada
-- **Fonte de interface e assinatura:** Sora (fallback Arial)
+Arquivos de identidade:
+- `public/brand/logo-horizontal.svg`: símbolo oficial + logotipo vetorial extraído da arte, assinatura para fundo claro
+- `public/brand/logo-horizontal-escuro.svg`: composição em branco para fundo escuro
+- `public/brand/orbita.svg`: anéis concêntricos como símbolo independente
+- `public/brand/app-icon.svg`: símbolo adaptado para aplicativos
+- `public/favicon.svg`: versão simplificada para a aba
+- `public/brand.css`: aplicação da paleta e dos elementos visuais nos temas claro/escuro
 
-## Paleta
-- Vermelho institucional: `#B51222`; vermelho vivo: `#E10D1D`
-- Grafite principal: `#17212B`; superfície escura: `#1B2A38`
-- Fundo da aplicação: `#F5F7F9`; cartões: `#FFFFFF`
+Não foram incluídos os logotipos de parceiros (Claro) que aparecem nas aplicações da marca. Esta atualização não modifica autenticação, perfis, regras Firebase, Firestore, módulos de SST nem dados.
 
-## Aplicação
-- `public/brand/orbita.svg`: símbolo standalone sem fundo
-- `public/brand/logo-horizontal.svg`: logo para fundo claro
-- `public/brand/logo-horizontal-escuro.svg`: logo para fundo escuro
-- `public/brand/app-icon.svg`: ícone do app
-- `public/favicon.svg`: favicon
-- `public/brand.css`: tokens, telas de acesso, sidebar, dashboard, cartões, responsividade e modo escuro
+O logotipo original tem letras desenhadas em vetores; as curvas de "technet" foram preservadas. Os círculos concêntricos foram redesenhados com base nas dimensões observadas na mesma página do PDF, para uso responsivo e legível.
 
-O redesign preserva os IDs de elementos, eventos de autenticação, rotas internas, regras de Firebase e tratamento de dados. A autenticação continua obrigatória; exemplos na prancha visual não representam dados reais nem foram inseridos no sistema.
-
-## Publicação
-`firebase deploy --only hosting --project technet-sst-2026`
+## Deploy
+A publicação da versão no Firebase Hosting deve ser executada separadamente após a mesclagem: `firebase deploy --only hosting --project technet-sst-2026`.

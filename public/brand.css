@@ -150,3 +150,89 @@ body.dark .gate-card{background:#FFFFFF;color:#17212B}
  .gate-brand-logo{max-width:min(100%,260px)}
  .gate-description,.gate-bottom{overflow-wrap:anywhere}
 }
+
+
+/* TECHNET | Identidade oficial baseada no PDF corporativo enviado em 10/11/2026.
+   Vermelho #E20612; cinza #4D4D4D. Os arquivos SVG são adaptados da
+   marca original (logotipo vetorizado e anéis concêntricos). */
+:root {
+ --sst-red:#E20612;--sst-red-strong:#BA0611;--sst-bright:#E20612;
+ --sst-ink:#343434;--sst-graphite:#4D4D4D;--sst-slate:#666666;
+ --surface:#FFFFFF;--bg:#F6F6F6;--text:#30343A;--text2:#626B73;
+ --border:#E4E5E7;--primary:#C90010;--primary2:#A5000B;
+ --shadow:0 6px 23px rgba(36,36,36,.045);
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',Arial,Helvetica,sans-serif}
+.brand{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:0 9px 21px;margin-bottom:8px;border-color:#6C6C6C}
+.brand-logo-horizontal{display:block;width:100%;max-width:211px;height:auto;min-height:60px;object-fit:contain;object-position:left center}
+.brand-subtitle{display:block;padding-left:1px;margin-top:-1px;font-size:8px;font-weight:800;letter-spacing:.85px;color:#E8E8E8;line-height:1.35}
+.sidebar{background:#4D4D4D;border-color:#575757;color:#F1F1F1}
+.workspace{background:#5D5D5D;border-color:#777777}
+.workspace-icon{background:#E20612;color:#FFFFFF}
+.workspace small,.workspace-arrow{color:#E2E2E2}
+.nav-caption{color:#D4D4D4}
+.nav-link{color:#ECECEC}
+.nav-link:hover{background:#606060;color:white}
+.nav-link.active{background:#E20612;color:white;box-shadow:0 4px 12px rgba(40,0,0,.15)}
+.nav-link.active::before{background:#FFFFFF}
+.nav-count{background:#802A30;color:white}
+.nav-link.active .nav-count{background:#FFFFFF;color:#A4000A}
+.safety-tip{background:#595959;border:1px solid #777777}
+.safety-tip strong,.safety-tip p{color:#F2F2F2}
+.tip-icon{color:#FFFFFF}
+.sidebar-user{border-color:#797979;color:#FFFFFF}
+.sidebar-user .avatar{background:#E20612}
+.sidebar-user small{color:#E2E2E2}
+.topbar{background:#FFFFFF}
+.breadcrumb{color:#4D4D4D}
+.breadcrumb-mark{border-color:#E20612;box-shadow:0 0 0 3px #FDE7E9}
+.header-avatar{background:#FFE8EA;color:#9D0010}
+.page-intro h1{color:var(--text)}
+.eyebrow{color:#BA0611}
+.btn-primary{background:#C90010;border-color:#C90010;color:#FFFFFF;box-shadow:0 4px 12px rgba(201,0,16,.13)}
+.btn-primary:hover{background:#A5000B;border-color:#A5000B}
+.gate-signin{background:#C90010;border-color:#C90010;color:#FFFFFF}
+.gate-signin:hover{background:#A5000B}
+.bar,.legend-dot{background:#E20612}
+.bar.secondary,.legend-dot.secondary{background:#BEBEBE}
+.kpi-card::after{background:linear-gradient(90deg,#E20612,#F5B2B8 45%,transparent 100%)}
+.ic-red{background:#FFECEF;color:#B4000E}
+.ic-blue{background:#F1F1F1;color:#505050}
+.lib-ivm,.report-callout{background:#FFF1F2;border-color:#F0D3D6;color:#A6000D}
+.lib-ivm-icon,.lib-program-icon{background:#FDE6E8;color:#B9000F}
+.gate-brand-logo{display:block;max-width:320px;width:100%;height:auto}
+.gate-brand-system{display:block;color:#666666;font-size:9px;font-weight:800;letter-spacing:.8px;margin-top:-3px;line-height:1.5}
+.gate-card{background:#FFFFFF;color:#343434;border:1px solid #ECECEC}
+.gate-card h1{color:#333333}
+.gate-card h1 span{color:#BC0010}
+.gate-indicator{color:#BA0010}
+.gate-indicator span{background:#E20612}
+.gate-status{color:#56616C}
+.auth-gate{background:radial-gradient(circle at 14% 20%,rgba(226,6,18,.15),transparent 36%),linear-gradient(135deg,#525252 0%,#3E3E3E 60%,#303030 100%)}
+.gate-story-kicker{background:#E20612}
+.gate-story-eyebrow{color:#FFC7CB}
+.gate-story-title em{color:#FF9DA6}
+.gate-story-body p{color:#F1F1F1}
+.gate-story-top,.gate-story-footer{color:#F1F1F1}
+.gate-orbit-art{opacity:.12;filter:brightness(0) invert(1)}
+.gate-footnote span{color:#16946D}
+body.dark {
+ --surface:#292929;--bg:#1D1D1D;--text:#F5F5F5;--text2:#CCCCCC;--border:#494949;
+ --primary:#FF8C95;--primary2:#FFB6BB;--shadow:0 5px 28px rgba(0,0,0,.12);
+}
+body.dark .sidebar{background:#3D3D3D}
+body.dark .topbar{background:#292929}
+body.dark .card{background:var(--surface)}
+body.dark .breadcrumb{color:#F4F4F4}
+body.dark .btn-primary{background:#C90010;color:white;border-color:#C90010}
+body.dark .btn-primary:hover{background:#A5000B;border-color:#A5000B}
+body.dark .bar,body.dark .legend-dot{background:#FF5360}
+body.dark .bar.secondary,body.dark .legend-dot.secondary{background:#878787}
+body.dark .gate-card{background:#FFFFFF;color:#343434}
+@media(max-width:600px){
+ .auth-gate{width:100%;max-width:100%;overflow-x:hidden}
+ .gate-layout{width:100%;min-width:0}
+ .gate-card{min-width:0;max-width:100%}
+ .gate-brand-logo{max-width:300px}
+ .gate-brand-system{font-size:8px;letter-spacing:.5px}
+}
