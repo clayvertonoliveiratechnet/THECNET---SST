@@ -87,7 +87,7 @@ if(section==="evidencias"){
  select("Estado do documento","status",["Vigente","Em revisão","Substituído","Arquivado"],v.status||"Vigente");
 }
 html+=field("Link HTTPS da lista / documento (Drive, Forms ou repositório oficial)","link","url",v.link||"", 'placeholder="https://..." maxlength="1200"')+
- '<div class="form-field wide"><label>Arquivo do computador (opcional, máximo 20 MB)</label><input type="file" name="arquivo" accept="'+ACCEPT+'"><small>Aceitos PDF, imagens, Word, Excel, CSV e OpenDocument. O upload depende de Cloud Storage configurado no plano Blaze; links HTTPS já funcionam.</small>'+(v.arquivoNome?'<small>Atual: '+esc(v.arquivoNome)+'</small>':"")+'</div>'+
+ '<div class="form-field wide"><label>Arquivo do computador (opcional, máximo 20 MB)</label><input type="file" name="arquivo" accept="'+ACCEPT+'"><small>Aceitos PDF, imagens, Word, Excel, CSV e OpenDocument. O envio de arquivo depende da disponibilidade do recurso; links HTTPS podem ser utilizados.</small>'+(v.arquivoNome?'<small>Atual: '+esc(v.arquivoNome)+'</small>':"")+'</div>'+
  wideText("Observações","observacoes",v.observacoes)+
  '<div class="lib-form-tip">'+icon("shield")+'<span>Acesso somente por usuários autorizados. Não envie ASOs ou dados médicos individuais nesta biblioteca.</span></div>';
 $("#lib-fields").innerHTML=html;if(section==="evidencias")updateCollectiveMode();$("#lib-form").dataset.kind=section;$("#lib-progress").hidden=true;$("#lib-submit").disabled=false;$("#lib-dialog").showModal();
