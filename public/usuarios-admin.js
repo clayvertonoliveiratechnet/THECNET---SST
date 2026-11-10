@@ -36,7 +36,7 @@ export function renderUserAdmin(){
  return '<section class="page-intro"><div><span class="eyebrow">ADMINISTRAÇÃO · TECHNET SST</span><h1>Gestão de usuários</h1><p class="subtitle">Autorize contas Google, vincule colaboradores e controle os perfis de acesso.</p></div><div class="page-actions">'+eButton("Atualizar","refresh")+eButton("+ Novo acesso","new","","","btn-primary")+'</div></section>'+
  '<div class="um-infotip"><span>🔐</span><div><b>Acesso sem senha manual</b><p>Cadastre o e-mail Google do colaborador. Ele poderá entrar com esse mesmo e-mail pela tela de login do TECHNET SST. O sistema não envia convite por e-mail automaticamente.</p></div></div>'+
  '<div class="um-summary"><div class="card"><b id="um-count">'+(state.invites.length+state.legacy.length)+'</b><span>Contas cadastradas</span></div><div class="card"><b id="um-active">'+[...state.invites,...state.legacy].filter(u=>u.ativo).length+'</b><span>Acessos ativos</span></div><div class="card"><b id="um-pending">'+state.invites.filter(u=>!u.colaboradorId).length+'</b><span>Sem colaborador vinculado</span></div></div>'+
- '<section class="card um-card"><div class="um-heading"><div><h2>Contas e permissões</h2><p class="subtitle">As alterações são aplicadas nas regras do Firebase em cada consulta.</p></div><label class="um-search"><span>⌕</span><input id="um-filter" value="'+safe(state.filter)+'" placeholder="Buscar nome, e-mail ou perfil" aria-label="Filtrar contas"></label></div>'+load+
+ '<section class="card um-card"><div class="um-heading"><div><h2>Contas e permissões</h2><p class="subtitle">As permissões são verificadas automaticamente ao acessar o sistema.</p></div><label class="um-search"><span>⌕</span><input id="um-filter" value="'+safe(state.filter)+'" placeholder="Buscar nome, e-mail ou perfil" aria-label="Filtrar contas"></label></div>'+load+
  '<div class="table-scroll"><table class="data-table um-table"><thead><tr><th>Usuário</th><th>Perfil</th><th>Setor</th><th>Situação</th><th>Colaborador</th><th>Ações</th></tr></thead><tbody id="um-body">'+usersTable()+'</tbody></table></div></section>'+
  '<div class="um-roles"><div><strong>Administrador</strong><p>Controla acessos e todos os módulos.</p></div><div><strong>Supervisor</strong><p>Cadastra, edita e consulta registros SST.</p></div><div><strong>Equipe SST</strong><p>Cadastra, edita e consulta registros SST.</p></div><div><strong>Somente leitura</strong><p>Consulta os registros sem alterar dados.</p></div></div>';
 }
@@ -62,7 +62,7 @@ function showModal(source,id){
   '<option value="nenhum">Autorizar sem cadastrar colaborador</option>'+
   allCollaborators().map(u=>'<option value="'+safe(u.id)+'" '+(assoc===u.id?"selected":"")+'>'+safe(u.titulo||"Colaborador")+' · '+safe(u.responsavel||"")+'</option>').join("");
  $("#um-fields").innerHTML=legacy?
-  '<p class="um-note">Conta cadastrada anteriormente pelo UID do Firebase. A edição não altera o e-mail de login.</p><div class="form-field"><label>Identificador da conta</label><input value="'+safe(id)+'" disabled></div><div class="form-field"><label>Perfil</label><select name="perfil">'+roles(existing?.perfil||"leitura")+'</select></div><label class="um-check"><input type="checkbox" name="ativo" '+(existing?.ativo?"checked":"")+'> Acesso autorizado</label>':
+  '<p class="um-note">Conta cadastrada anteriormente. A edição não altera o e-mail de acesso.</p><div class="form-field"><label>Identificador da conta</label><input value="'+safe(id)+'" disabled></div><div class="form-field"><label>Perfil</label><select name="perfil">'+roles(existing?.perfil||"leitura")+'</select></div><label class="um-check"><input type="checkbox" name="ativo" '+(existing?.ativo?"checked":"")+'> Acesso autorizado</label>':
   field("E-mail Google *","email","email",existing?.email||'','required maxlength="254" '+(existing?"readonly":""))+
   field("Nome completo *","nome","text",existing?.nome||"",'required maxlength="150"')+
   '<div class="form-field"><label>Perfil de acesso</label><select name="perfil">'+roles(existing?.perfil||"leitura")+'</select></div>'+
@@ -126,9 +126,9 @@ async function saveForm(ev){
   await batch.commit();
   await loadUserAdmin();
   if(employeeDoc&&services.reloadCollaborators)await services.reloadCollaborators();
-  $("#um-dialog").close();services.toast("Acesso salvo no Firebase. A conta entra com seu e-mail Google.");
+  $("#um-dialog").close();services.toast("Acesso atualizado. A conta pode entrar com seu e-mail Google.");
   services.rerender();
- }catch(err){console.error("user save",err);services.toast("Não foi possível salvar a autorização. Confira a conexão e as regras do Firebase.",true);}
+ }catch(err){console.error("user save",err);services.toast("Não foi possível atualizar a autorização. Confira sua conexão e permissões.",true);}
  finally{state.saving=false;$("#um-submit").disabled=false;}
 }
 async function toggleUser(source,id){
@@ -140,7 +140,7 @@ async function toggleUser(source,id){
  if(!confirm((newStatus?"Ativar":"Bloquear")+" acesso de "+(record.nome||record.email||record.id)+"?"))return;
  try{
   await updateDoc(doc(services.db,source==="legacy"?"usuarios":"convites",id),{ativo:newStatus,atualizadoEm:new Date().toISOString()});
-  await loadUserAdmin();services.rerender();services.toast(newStatus?"Usuário autorizado.":"Acesso bloqueado nas regras do Firebase.");
+  await loadUserAdmin();services.rerender();services.toast(newStatus?"Usuário autorizado.":"Acesso bloqueado.");
  }catch(err){console.error(err);services.toast("Falha ao atualizar permissão.",true);}
 }
 function click(ev){

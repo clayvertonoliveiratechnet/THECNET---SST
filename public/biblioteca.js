@@ -87,7 +87,7 @@ if(section==="evidencias"){
  select("Estado do documento","status",["Vigente","Em revisão","Substituído","Arquivado"],v.status||"Vigente");
 }
 html+=field("Link HTTPS da lista / documento (Drive, Forms ou repositório oficial)","link","url",v.link||"", 'placeholder="https://..." maxlength="1200"')+
- '<div class="form-field wide"><label>Arquivo do computador (opcional, máximo 20 MB)</label><input type="file" name="arquivo" accept="'+ACCEPT+'"><small>Aceitos PDF, imagens, Word, Excel, CSV e OpenDocument. O upload depende de Cloud Storage configurado no plano Blaze; links HTTPS já funcionam.</small>'+(v.arquivoNome?'<small>Atual: '+esc(v.arquivoNome)+'</small>':"")+'</div>'+
+ '<div class="form-field wide"><label>Arquivo do computador (opcional, máximo 20 MB)</label><input type="file" name="arquivo" accept="'+ACCEPT+'"><small>Aceitos PDF, imagens, Word, Excel, CSV e OpenDocument. O envio de arquivo depende da disponibilidade do recurso; links HTTPS podem ser utilizados.</small>'+(v.arquivoNome?'<small>Atual: '+esc(v.arquivoNome)+'</small>':"")+'</div>'+
  wideText("Observações","observacoes",v.observacoes)+
  '<div class="lib-form-tip">'+icon("shield")+'<span>Acesso somente por usuários autorizados. Não envie ASOs ou dados médicos individuais nesta biblioteca.</span></div>';
 $("#lib-fields").innerHTML=html;if(section==="evidencias")updateCollectiveMode();$("#lib-form").dataset.kind=section;$("#lib-progress").hidden=true;$("#lib-submit").disabled=false;$("#lib-dialog").showModal();
@@ -123,5 +123,5 @@ try{
  await setDoc(docRef,obj); 
  if(existing?.arquivoPath&&newPath&&existing.arquivoPath!==newPath){try{await deleteObject(sref(services.storage,existing.arquivoPath));}catch(e){console.warn("Old upload cleanup required",e);}}
  await loadLibrary();$("#lib-dialog").close();refresh();notify("Documento salvo com segurança.");
-}catch(err){console.error(err);if(newPath){try{await deleteObject(sref(services.storage,newPath));}catch{}}const code=err.code||"";if(code.includes("storage")||String(err.message).toLowerCase().includes("bucket"))notify("Upload indisponível: configure o Cloud Storage no Firebase (plano Blaze). Você pode cadastrar um link do Drive ou Forms sem enviar arquivo.",true);else notify("Falha ao salvar: "+err.message,true);}finally{state.busy=false;$("#lib-submit").disabled=false;$("#lib-progress").hidden=true;}
+}catch(err){console.error(err);if(newPath){try{await deleteObject(sref(services.storage,newPath));}catch{}}const code=err.code||"";if(code.includes("storage")||String(err.message).toLowerCase().includes("bucket"))notify("Envio de arquivo indisponível neste ambiente. Utilize um link do Drive ou Forms, ou procure o suporte.",true);else notify("Falha ao salvar: "+err.message,true);}finally{state.busy=false;$("#lib-submit").disabled=false;$("#lib-progress").hidden=true;}
 }
