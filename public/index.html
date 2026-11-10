@@ -3,46 +3,37 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#4D4D4D"/>
+  <meta name="theme-color" content="#0B0B0B"/>
   <meta name="description" content="TECHNET SST — Gestão de Segurança e Saúde do Trabalho para equipes de telecomunicações"/>
   <title>TECHNET | Sistema de SST</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
   <link rel="stylesheet" href="styles.css?v=20261110-importador-todas-abas"/>
   <link rel="stylesheet" href="brand.css?v=20261110-identidade-oficial"/>
+  <link rel="stylesheet" href="black-theme.css?v=20261110-corporate-black"/>
 </head>
 <body>
   <section id="auth-gate" class="auth-gate" aria-live="polite">
     <div class="gate-layout">
-      <div class="gate-story" aria-hidden="true">
-        <div class="gate-story-top"><span class="gate-story-kicker"></span> PLATAFORMA TECHNET SST</div>
-        <div class="gate-story-body">
-          <img class="gate-orbit-art" src="brand/orbita.svg" alt=""/>
-          <div class="gate-story-eyebrow">PREVENÇÃO · CONTROLE · TECNOLOGIA</div>
-          <div class="gate-story-title">Segurança que<br/>acompanha cada<br/><em>operação.</em></div>
-          <p>Uma visão integrada de riscos, pessoas e processos — da prevenção à tomada de decisão.</p>
-        </div>
-        <div class="gate-story-footer"><span>01 / PROTEÇÃO</span><span>02 / MONITORAMENTO</span><span>03 / CONFIANÇA</span></div>
-      </div>
       <div class="gate-card">
-      <div class="gate-brand"><img class="gate-brand-logo" src="brand/logo-horizontal.svg" alt="TECHNET — identidade visual oficial"/><span class="gate-brand-system">SISTEMA DE SAÚDE E SEGURANÇA DO TRABALHO</span></div>
-      <div class="gate-indicator"><span></span> PLATAFORMA DE GESTÃO SST</div>
-      <h1>Bem-vindo ao<br/><span>TECHNET SST.</span></h1>
-      <p class="gate-description">Sua central de saúde e segurança do trabalho. Entre com sua conta autorizada para acessar o ambiente de gestão.</p>
+      <div class="gate-brand"><img class="gate-brand-logo" src="brand/logo-horizontal-escuro.svg" alt="technet"/><span class="gate-brand-system">SAÚDE E SEGURANÇA DO TRABALHO</span></div>
+      <div class="gate-indicator"><span></span> ACESSO RESTRITO</div>
+      <h1>Entrar no sistema</h1>
+      <p class="gate-description">Entre com uma conta Google autorizada para consultar e atualizar os registros de SST.</p>
       <div id="gate-status" class="gate-status" role="status">Verificando sua sessão...</div>
       <button type="button" class="btn gate-signin" id="gate-google-login" hidden>Entrar com Google →</button>
       <button type="button" class="btn gate-signin" id="gate-retry" hidden>Tentar carregar novamente</button>
       <button type="button" class="btn btn-muted gate-switch" id="gate-switch" hidden>Trocar conta Google</button>
-      <div class="gate-footnote"><span aria-hidden="true">●</span> Acesso seguro · Conta autorizada · Firebase</div>
+      <div class="gate-footnote">Acesso permitido apenas a usuários cadastrados.</div>
       </div>
     </div>
-    <div class="gate-bottom">© 2026 TECHNET · Saúde e Segurança do Trabalho</div>
+    <div class="gate-bottom">© 2026 TECHNET · Sistema de SST</div>
   </section>
   <div id="app" class="app-shell" hidden>
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="#" data-route="dashboard" aria-label="TECHNET SST — início">
         <img class="brand-logo-horizontal" src="brand/logo-horizontal-escuro.svg" alt="technet"/><span class="brand-subtitle">SST · SAÚDE E SEGURANÇA DO TRABALHO</span>
       </a>
-      <div class="workspace"><span class="workspace-icon">T</span><span><b>TECHNET</b><small>Operações Telecom</small></span><span class="workspace-arrow">⌄</span></div>
+      <div class="workspace"><span class="workspace-icon">T</span><span><b>TECHNET</b><small>Operações Telecom</small></span></div>
       <div class="nav-caption">GERENCIAMENTO</div>
       <nav id="nav">
         <a class="nav-link active" data-route="dashboard" href="#dashboard"><span data-icon="layout-dashboard"></span>Visão geral</a>
@@ -62,14 +53,14 @@
         <a class="nav-link" data-route="usuarios" id="nav-user-admin" href="#usuarios" hidden><span data-icon="users"></span>Gestão de usuários</a>
       </nav>
       <div class="sidebar-bottom">
-        <div class="safety-tip"><span class="tip-icon" data-icon="shield-check"></span><strong>Segurança em cada camada.</strong><p>Prevenção, evidências e ações em uma única plataforma.</p></div>
+        
         <button class="sidebar-user" id="account-btn" type="button"><span class="avatar" id="avatar">T</span><span><strong id="user-label">TECHNET SST</strong><small id="user-description">Ambiente de produção</small></span><span data-icon="chevrons-up-down"></span></button>
       </div>
     </aside>
     <div class="main-column">
       <header class="topbar">
         <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb"><span class="breadcrumb-mark"></span> TECHNET · SST</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
-        <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Autenticando</span><button class="icon-button" title="Alternar tema" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button><span class="header-avatar">T</span></div>
+        <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Autenticando</span><button class="icon-button" title="Alternar contraste" aria-label="Alternar contraste" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button><span class="header-avatar">T</span></div>
       </header>
       <main class="content" id="content"><div class="loading-panel">Carregando TECHNET SST…</div></main>
       <footer class="footer"><span>© 2026 TECHNET · Segurança e Saúde do Trabalho</span><span id="footer-state">Produção · Firestore</span></footer>
