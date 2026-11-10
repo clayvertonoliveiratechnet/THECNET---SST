@@ -507,3 +507,34 @@ body.signature-public-active{overflow:hidden}
 #sign-feedback{font-size:12px;color:#375d77;min-height:15px}
 @media(max-width:850px){.sign-sessions{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.sign-sessions{grid-template-columns:1fr}.sign-form-grid{grid-template-columns:1fr}.sign-form-grid label.wide,.sign-form-grid .wide{grid-column:auto}.sign-guest-card{padding:18px;margin:0 auto 26px}.sign-guest-card h1{font-size:21px}.sign-guest-summary dd{max-width:62%}.sign-guest-pad canvas{height:150px}.sign-report-actions{flex-direction:column;align-items:flex-start}}
+
+/* Importação segregada por módulo: Excel/CSV, prévia, diff e confirmação */
+.mod-import-dialog{width:min(720px,calc(100% - 18px));max-height:calc(100dvh - 20px);overflow-y:auto}
+.mod-import-hub{width:min(660px,calc(100% - 18px));max-height:calc(100dvh - 20px);overflow-y:auto}
+.mod-import-help{font-size:12px;line-height:1.7;color:var(--text2);margin:12px 0 18px}
+.mod-import-toolbar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:11px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;margin-bottom:12px}
+.mod-import-toolbar>.btn{flex-shrink:0}
+.mod-import-file-label{display:flex;flex:1;min-width:220px;flex-direction:column;gap:7px;font-size:11px;font-weight:700;color:var(--text)}
+.mod-import-file-label input{min-width:0;width:100%;font-size:11px;color:var(--text);padding:9px;background:var(--surface);border:1px dashed var(--border);border-radius:9px;box-sizing:border-box}
+.mod-import-sheet{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text2);margin:10px 0}
+.mod-import-sheet[hidden]{display:none}
+.mod-import-sheet select{max-width:280px;padding:10px 12px;border-radius:8px;background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.mod-import-preview{line-height:1.7;color:var(--text2);font-size:12px}
+.mod-import-preview p{margin:11px 0}
+.mod-import-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.mod-import-metrics>div{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;background:var(--bg);padding:14px 8px;border:1px solid var(--border)}
+.mod-import-metrics b{font:800 25px Manrope,sans-serif;color:var(--primary)}
+.mod-import-metrics small{font-size:11px;color:var(--text2)}
+.mod-import-preview details{border:1px solid var(--border);border-radius:8px;padding:12px;margin:12px 0}
+.mod-import-preview summary{cursor:pointer;color:var(--text);font-weight:800}
+.mod-import-preview details ul,.mod-import-errors ul{padding-left:20px;margin:8px 0;max-height:170px;overflow:auto}
+.mod-import-errors{background:color-mix(in srgb,#c8474d 7%,var(--surface));border:1px solid color-mix(in srgb,#c8474d 25%,var(--border));border-radius:10px;color:var(--text);padding:13px}
+.mod-import-errors strong{color:#bf4a50}
+.mod-import-message{margin:12px 0;font-size:12px;line-height:1.65;color:var(--text2)}
+.mod-import-message.is-error{color:#c8474d}
+.mod-hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.mod-hub-choice{cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:6px;justify-content:center;padding:18px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);transition:border-color .2s ease,background .2s ease}
+.mod-hub-choice:hover,.mod-hub-choice:focus-visible{border-color:var(--primary);background:color-mix(in srgb,var(--primary) 5%,var(--surface))}
+.mod-hub-choice strong{font-size:12px}
+.mod-hub-choice small{font-size:10px;color:var(--text2)}
+@media(max-width:640px){.mod-import-toolbar{flex-direction:column;align-items:stretch}.mod-import-file-label{min-width:0}.mod-hub-grid{grid-template-columns:1fr}.mod-import-dialog,.mod-import-hub{padding:16px}}
