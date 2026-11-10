@@ -13,8 +13,8 @@ body.dark {
   --text: #f2f2f2;
   --text2: #bdbdbd;
   --border: #363636;
-  --primary: #e20612;
-  --primary2: #bc0711;
+  --primary: #ff8390;
+  --primary2: #ffadb5;
   --shadow: none;
   --sst-red: #e20612;
   --sst-red-strong: #bc0711;
@@ -431,3 +431,38 @@ body.dark .card { background: var(--surface); }
 @media(prefers-reduced-motion:reduce) {
   .kpi-card:hover, .btn-primary:hover { transform: none; }
 }
+
+/* Secondary modules and selection states */
+.um-error, body.dark .um-error { background: #45272d; color: #ffb9c0; }
+.um-feedback { background: #232323; color: #cfcfcf; }
+.um-fields .um-check input, .body-checkboxes input { accent-color: #e20612; }
+.pgr-dash-kpis > div,
+.pgr-notices > div, .body-stats > div,
+.body-visual, .sst-indicadores-grid > div,
+.sst-import-preview, .lib-unit {
+  background: #202020;
+  border: 1px solid #383838;
+  border-radius: 5px;
+}
+.pgr-dash-table th { background: #242424; color: #d4d4d4; }
+.pgr-dash-table td { border-color: #3b3b3b; color: #dedede; }
+.body-toggle { background: #242424; border-color: #484848; border-radius: 5px; }
+.body-toggle button { color: #dedede; border-radius: 4px; }
+.body-toggle button.active { color: #ffb4b9; background: #3d2a2c; box-shadow: none; }
+.body-ranking-heading button { color: #ff9aa4; }
+.body-zone:hover > *, .body-zone.is-selected > *, .body-zone:focus-visible > * {
+  stroke: #ff818c;
+}
+.body-rank-track { background: #333; }
+.body-rank-track > span { background: #df6671; }
+.sst-indicadores-2026 h2 { color: var(--text); font-family: 'DM Sans', Arial, sans-serif; }
+.sst-indicadores-grid strong, .pgr-dash-kpis b { color: #eeeeee; }
+.sst-import-dialog input[type=file] { background: #222; color: #eee; border-color: #555; }
+#record-dialog .form-field .body-checkboxes label {
+  background: #242424;
+  color: #f0f0f0;
+  border: 1px solid #454545;
+  border-radius: 5px;
+}
+#record-dialog .form-field .body-checkboxes input[type=checkbox] { accent-color: #e20612; }
+#record-dialog .body-checkboxes label:has(input:checked) { background: #3c2629; border-color: #ee5662; }
