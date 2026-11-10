@@ -123,5 +123,5 @@ try{
  await setDoc(docRef,obj); 
  if(existing?.arquivoPath&&newPath&&existing.arquivoPath!==newPath){try{await deleteObject(sref(services.storage,existing.arquivoPath));}catch(e){console.warn("Old upload cleanup required",e);}}
  await loadLibrary();$("#lib-dialog").close();refresh();notify("Documento salvo com segurança.");
-}catch(err){console.error(err);if(newPath){try{await deleteObject(sref(services.storage,newPath));}catch{}}const code=err.code||"";if(code.includes("storage")||String(err.message).toLowerCase().includes("bucket"))notify("Upload indisponível: configure o Cloud Storage no Firebase (plano Blaze). Você pode cadastrar um link do Drive ou Forms sem enviar arquivo.",true);else notify("Falha ao salvar: "+err.message,true);}finally{state.busy=false;$("#lib-submit").disabled=false;$("#lib-progress").hidden=true;}
+}catch(err){console.error(err);if(newPath){try{await deleteObject(sref(services.storage,newPath));}catch{}}const code=err.code||"";if(code.includes("storage")||String(err.message).toLowerCase().includes("bucket"))notify("Envio de arquivo indisponível neste ambiente. Utilize um link do Drive ou Forms, ou procure o suporte.",true);else notify("Falha ao salvar: "+err.message,true);}finally{state.busy=false;$("#lib-submit").disabled=false;$("#lib-progress").hidden=true;}
 }

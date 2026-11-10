@@ -3,41 +3,41 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#0B0B0B"/>
+  <meta name="theme-color" content="#101419"/>
   <meta name="description" content="TECHNET SST — Gestão de Segurança e Saúde do Trabalho para equipes de telecomunicações"/>
   <title>TECHNET | Sistema de SST</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
   <link rel="stylesheet" href="styles.css?v=20261110-importador-todas-abas"/>
   <link rel="stylesheet" href="brand.css?v=20261110-identidade-oficial"/>
-  <link rel="stylesheet" href="black-theme.css?v=20261110-corporate-black"/>
+  <link rel="stylesheet" href="technet-ui.css?v=20261110-themely-v3"/>
 </head>
 <body>
   <section id="auth-gate" class="auth-gate" aria-live="polite">
     <div class="gate-layout">
       <div class="gate-card">
-      <div class="gate-brand"><img class="gate-brand-logo" src="brand/logo-horizontal-escuro.svg" alt="technet"/><span class="gate-brand-system">SAÚDE E SEGURANÇA DO TRABALHO</span></div>
-      <div class="gate-indicator"><span></span> ACESSO RESTRITO</div>
-      <h1>Entrar no sistema</h1>
-      <p class="gate-description">Entre com uma conta Google autorizada para consultar e atualizar os registros de SST.</p>
+      <div class="gate-brand"><img class="gate-brand-logo" src="brand/logo-ui-dark.svg" alt="technet"/><span class="gate-brand-system">PLATAFORMA DE SAÚDE E SEGURANÇA DO TRABALHO</span></div>
+      <div class="gate-indicator"><span></span> PORTAL CORPORATIVO</div>
+      <h1>Acessar sua conta</h1>
+      <p class="gate-description">Entre com sua conta corporativa para acessar registros, inspeções e documentos de SST.</p>
       <div id="gate-status" class="gate-status" role="status">Verificando sua sessão...</div>
-      <button type="button" class="btn gate-signin" id="gate-google-login" hidden>Entrar com Google →</button>
+      <button type="button" class="btn gate-signin" id="gate-google-login" hidden>Continuar com Google</button>
       <button type="button" class="btn gate-signin" id="gate-retry" hidden>Tentar carregar novamente</button>
       <button type="button" class="btn btn-muted gate-switch" id="gate-switch" hidden>Trocar conta Google</button>
-      <div class="gate-footnote">Acesso permitido apenas a usuários cadastrados.</div>
+      <div class="gate-footnote"><span aria-hidden="true">●</span> Acesso exclusivo a usuários autorizados</div>
       </div>
     </div>
-    <div class="gate-bottom">© 2026 TECHNET · Sistema de SST</div>
+    <div class="gate-bottom">© 2026 TECHNET · Gestão de Saúde e Segurança do Trabalho</div>
   </section>
   <div id="app" class="app-shell" hidden>
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="#" data-route="dashboard" aria-label="TECHNET SST — início">
-        <img class="brand-logo-horizontal" src="brand/logo-horizontal-escuro.svg" alt="technet"/><span class="brand-subtitle">SST · SAÚDE E SEGURANÇA DO TRABALHO</span>
+        <img class="brand-logo-horizontal" src="brand/logo-ui-dark.svg" alt="technet"/><span class="brand-subtitle">GESTÃO DE SAÚDE E SEGURANÇA DO TRABALHO</span>
       </a>
-      <div class="workspace"><span class="workspace-icon">T</span><span><b>TECHNET</b><small>Operações Telecom</small></span></div>
-      <div class="nav-caption">GERENCIAMENTO</div>
+      <div class="sidebar-context"><span class="sidebar-context-label">AMBIENTE OPERACIONAL</span><strong>Gestão de SST</strong></div>
+      <div class="nav-caption">OPERAÇÕES</div>
       <nav id="nav">
         <a class="nav-link active" data-route="dashboard" href="#dashboard"><span data-icon="layout-dashboard"></span>Visão geral</a>
-        <a class="nav-link" data-route="incidentes" href="#incidentes"><span data-icon="alert-triangle"></span>Incidentes</a>
+        <a class="nav-link" data-route="incidentes" href="#incidentes"><span data-icon="alert-triangle"></span>Ocorrências</a>
         <a class="nav-link" data-route="inspecoes" href="#inspecoes"><span data-icon="clipboard-check"></span>Inspeções</a>
         <a class="nav-link" data-route="epis" href="#epis"><span data-icon="hard-hat"></span>Controle de EPIs</a>
         <a class="nav-link" data-route="treinamentos" href="#treinamentos"><span data-icon="graduation-cap"></span>Treinamentos</a>
@@ -54,21 +54,21 @@
       </nav>
       <div class="sidebar-bottom">
         
-        <button class="sidebar-user" id="account-btn" type="button"><span class="avatar" id="avatar">T</span><span><strong id="user-label">TECHNET SST</strong><small id="user-description">Ambiente de produção</small></span><span data-icon="chevrons-up-down"></span></button>
+        <button class="sidebar-user" id="account-btn" type="button"><span class="avatar" id="avatar">T</span><span><strong id="user-label">TECHNET SST</strong><small id="user-description">Conta corporativa</small></span><span data-icon="chevrons-up-down"></span></button>
       </div>
     </aside>
     <div class="main-column">
       <header class="topbar">
         <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb"><span class="breadcrumb-mark"></span> TECHNET · SST</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
-        <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Autenticando</span><button class="icon-button" title="Alternar contraste" aria-label="Alternar contraste" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button><span class="header-avatar">T</span></div>
+        <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Verificando acesso</span><button class="icon-button" title="Alternar contraste" aria-label="Alternar contraste" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button></div>
       </header>
       <main class="content" id="content"><div class="loading-panel">Carregando TECHNET SST…</div></main>
-      <footer class="footer"><span>© 2026 TECHNET · Segurança e Saúde do Trabalho</span><span id="footer-state">Produção · Firestore</span></footer>
+      <footer class="footer"><span>TECHNET · Gestão de SST</span><span id="footer-state">Ambiente seguro</span></footer>
     </div>
   </div>
   <div class="overlay" id="overlay" hidden></div>
   <dialog id="record-dialog" class="dialog"><form id="record-form" method="dialog"><div class="dialog-head"><div><span class="eyebrow">TECHNET SST</span><h2 id="dialog-title">Novo registro</h2></div><button type="button" class="icon-button" id="dialog-close" aria-label="Fechar"><span data-icon="x"></span></button></div><div id="form-fields" class="form-fields"></div><div class="dialog-footer"><button type="button" class="btn btn-muted" id="dialog-cancel">Cancelar</button><button type="submit" class="btn btn-primary" id="save-record"><span data-icon="save"></span>Salvar registro</button></div></form></dialog>
-  <dialog id="auth-dialog" class="dialog auth-dialog"><div class="dialog-head"><div><span class="eyebrow">CONECTAR AO FIREBASE</span><h2>Acesso à TECHNET SST</h2></div><button type="button" class="icon-button" id="auth-close"><span data-icon="x"></span></button></div><p class="muted">Entre com uma conta autorizada para visualizar e atualizar os registros da equipe no Firebase.</p><button type="button" class="btn btn-google full" id="google-login"><span data-icon="log-in"></span>Entrar com Google</button><p class="auth-note" id="auth-message">Somente contas autorizadas podem acessar os dados do sistema.</p><button type="button" class="btn btn-muted full" id="signout" hidden>Sair da conta</button></dialog>
+  <dialog id="auth-dialog" class="dialog auth-dialog"><div class="dialog-head"><div><span class="eyebrow">CONTROLE DE ACESSO</span><h2>Acesso à TECHNET SST</h2></div><button type="button" class="icon-button" id="auth-close"><span data-icon="x"></span></button></div><p class="muted">Entre com uma conta autorizada para consultar e atualizar os registros do sistema.</p><button type="button" class="btn btn-google full" id="google-login"><span data-icon="log-in"></span>Entrar com Google</button><p class="auth-note" id="auth-message">A disponibilidade dos módulos depende do seu perfil de acesso.</p><button type="button" class="btn btn-muted full" id="signout" hidden>Sair da conta</button></dialog>
   <div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
   <script type="module" src="app.js?v=20261110-importador-todas-abas"></script>
 </body>

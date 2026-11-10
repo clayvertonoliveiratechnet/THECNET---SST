@@ -51,7 +51,7 @@ function renderPreview(raw,found){
  const lines=raw.acidentes.length;
  const personal=raw.acidentes.filter(r=>r.colaborador).length;
  const mapped=raw.acidentes.filter(r=>r.partesCorpo.length>0).length;
- $("#sst-import-preview").innerHTML='<strong>Arquivo validado</strong><p>'+lines+' acidentes; '+raw.hhtMensal.length+' registros de HHT; '+mapped+' acidentes com regiões definidas; '+personal+' registros com nomes de colaboradores.</p><p><b>'+found+' ocorrência(s) já cadastrada(s)</b> serão ignoradas para evitar duplicatas. Os novos registros serão gravados no Firestore, acessíveis somente a contas autorizadas.</p><p>As informações não serão publicadas no GitHub. Revise os casos de múltiplas partes e os dias perdidos não informados após importar.</p>';
+ $("#sst-import-preview").innerHTML='<strong>Arquivo validado</strong><p>'+lines+' acidentes; '+raw.hhtMensal.length+' registros de HHT; '+mapped+' acidentes com regiões definidas; '+personal+' registros com nomes de colaboradores.</p><p><b>'+found+' ocorrência(s) já cadastrada(s)</b> serão ignoradas para evitar duplicatas. Os novos registros serão armazenados no sistema e acessíveis apenas a contas autorizadas.</p><p>As informações não serão publicadas no GitHub. Revise os casos de múltiplas partes e os dias perdidos não informados após importar.</p>';
  $("#sst-import-commit").disabled=false;
 }
 function msg(m,error=false){const el=$("#sst-import-message");if(el){el.textContent=m;el.classList.toggle("is-error",error);}}
@@ -97,7 +97,7 @@ async function commitImport(){
   services.toast("Indicadores SST importados com sucesso.");
   selected=null;
   await services.afterImport();
- }catch(err){console.error("Erro ao importar",err);msg("Falha ao gravar no Firestore: "+err.message,true);services.toast("Falha na importação SST.",true);}
+ }catch(err){console.error("Erro ao importar",err);msg("Falha ao salvar os registros: "+err.message,true);services.toast("Falha na importação SST.",true);}
  finally{importing=false;$("#sst-import-commit").disabled=false;}
 }
 export function setupAccidentImport(options){
@@ -105,7 +105,7 @@ export function setupAccidentImport(options){
  const dialog=document.createElement("dialog");
  dialog.id="sst-import-dialog";dialog.className="dialog sst-import-dialog";
  dialog.innerHTML='<div class="dialog-head"><div><span class="eyebrow">IMPORTAÇÃO RESTRITA · SST</span><h2>Indicadores de acidentes 2026</h2></div><button type="button" class="icon-button" id="sst-import-close" aria-label="Fechar">×</button></div>'+
- '<p class="sst-import-helper">Selecione o JSON privado preparado a partir de <b>INDICADORES_DE_ACIDENTES-SST.xlsx</b>. Os dados pessoais serão enviados somente ao Firestore protegido, após sua confirmação.</p>'+
+ '<p class="sst-import-helper">Selecione o JSON privado preparado a partir de <b>INDICADORES_DE_ACIDENTES-SST.xlsx</b>. Os dados pessoais serão armazenados em ambiente protegido após sua confirmação.</p>'+
  '<input type="file" id="sst-import-file" accept=".json,application/json" aria-label="Selecionar arquivo JSON de indicadores">'+
  '<div class="sst-import-preview" id="sst-import-preview"></div><p class="sst-import-status" id="sst-import-message" role="status"></p>'+
  '<div class="dialog-footer"><button type="button" class="btn btn-muted" id="sst-import-cancel">Cancelar</button><button type="button" class="btn btn-primary" id="sst-import-commit" disabled>Confirmar importação</button></div>';

@@ -84,9 +84,9 @@ function feed(){let all=keys.filter(x=>x!=="colaboradores").flatMap(k=>data[k].m
 function tasks(){let active=data.acoes.filter(x=>x.status!=="Concluída").slice(0,4);return '<article class="card section-card"><div class="card-heading"><div><h2>Ações prioritárias</h2><p>Planos em acompanhamento</p></div><a href="#acoes" class="chip">Ver todas →</a></div><div class="tasklist">'+(active.length?active.map(a=>'<div class="task"><span class="priority '+(["Crítica","Alta"].includes(a.prioridade)?"high":a.prioridade==="Baixa"?"low":"")+'"></span><div class="task-content"><b>'+escape(a.titulo)+'</b><small>'+escape(a.responsavel||"Equipe")+' · Prazo: '+date(a.prazo)+'</small></div>'+pill(a.status)+'</div>').join(""):"<p>Sem pendências cadastradas.</p>")+'</div></article>';}
 function documentsOverview(){
  const stat=libraryStats();
- return '<section class="card docs-overview"><div><span class="eyebrow">BIBLIOTECA SST · PRODUÇÃO</span><h2>Documentação técnica cadastrada</h2><p>Programas e evidências recuperados diretamente do Cloud Firestore.</p></div><div class="docs-metrics"><div><strong>'+stat.vigentes+'</strong><span>PGRs mais recentes</span></div><div><strong>'+stat.totalPgr+'</strong><span>Versões de PGR</span></div><div><strong>'+stat.evidencias+'</strong><span>Evidências vinculadas</span></div></div><a href="#programas" class="btn btn-primary">Abrir biblioteca →</a></section>';
+ return '<section class="card docs-overview"><div><span class="eyebrow">DOCUMENTAÇÃO SST</span><h2>Documentação técnica cadastrada</h2><p>Programas, laudos e evidências cadastrados na plataforma.</p></div><div class="docs-metrics"><div><strong>'+stat.vigentes+'</strong><span>PGRs mais recentes</span></div><div><strong>'+stat.totalPgr+'</strong><span>Versões de PGR</span></div><div><strong>'+stat.evidencias+'</strong><span>Evidências vinculadas</span></div></div><a href="#programas" class="btn btn-primary">Abrir biblioteca →</a></section>';
 }
-function home(){let checks=count("inspecoes"),good=data.inspecoes.filter(x=>x.status==="Conforme").length,pending=data.acoes.filter(x=>x.status!=="Concluída").length;return intro("Visão geral","Centro de inteligência de SST da TECHNET.",button("Exportar dados","download","export-all")+renderImportHubButton(role)+button("Novo registro","plus","new-incidentes","btn-primary"))+banner()+'<div class="kpi-grid">'+kpi("Colaboradores",count("colaboradores"),"users","blue","Equipe cadastrada")+kpi("Ocorrências",count("incidentes"),"alert-triangle","red","Registros de incidentes")+kpi("Inspeções conformes",checks?Math.round(100*good/checks)+"%":"—","shield-check","green",good+" de "+checks+" inspeções")+kpi("Ações pendentes",pending,"clock","orange","Precisam de atenção")+'</div><div class="dashboard-grid">'+charts()+donut()+'</div><div class="dashboard-bottom">'+feed()+tasks()+'</div>'+documentsOverview()+renderAccidentIndicators(libraryEvidencias())+renderPgrDashboard(libraryProgramas())+renderBodyMap(data.incidentes);}
+function home(){let checks=count("inspecoes"),good=data.inspecoes.filter(x=>x.status==="Conforme").length,pending=data.acoes.filter(x=>x.status!=="Concluída").length;return intro("Visão geral","Acompanhamento dos registros, indicadores e pendências de SST.",button("Exportar dados","download","export-all")+renderImportHubButton(role)+button("Novo registro","plus","new-incidentes","btn-primary"))+banner()+'<div class="kpi-grid">'+kpi("Colaboradores",count("colaboradores"),"users","blue","Equipe cadastrada")+kpi("Ocorrências",count("incidentes"),"alert-triangle","red","Registros de incidentes")+kpi("Inspeções conformes",checks?Math.round(100*good/checks)+"%":"—","shield-check","green",good+" de "+checks+" inspeções")+kpi("Ações pendentes",pending,"clock","orange","Precisam de atenção")+'</div><div class="dashboard-grid">'+charts()+donut()+'</div><div class="dashboard-bottom">'+feed()+tasks()+'</div>'+documentsOverview()+renderAccidentIndicators(libraryEvidencias())+renderPgrDashboard(libraryProgramas())+renderBodyMap(data.incidentes);}
 function cell(key,value){if(key==="partesCorpo")return regionsOf({partesCorpo:value}).map(x=>BODY_AREAS.find(a=>a[0]===x)?.[1]||x).join(", ")||"—";return ["status","gravidade","prioridade"].includes(key)?pill(value):["data","validade","prazo"].includes(key)?date(value):escape(value||"—");}
 function rows(section){let a=sorted(data[section]);if(search){let q=search.toLowerCase();a=a.filter(r=>Object.values(r).some(v=>String(v??"").toLowerCase().includes(q)));}if(statusFilter)a=a.filter(r=>r.status===statusFilter);return a.map(r=>'<tr>'+display[section].map(k=>'<td>'+(k==="titulo"?'<strong>'+cell(k,r[k])+'</strong>':cell(k,r[k]))+'</td>').join("")+'<td><div class="table-row-actions">'+(canWrite()?'<button type="button" title="Editar" data-action="edit" data-section="'+section+'" data-id="'+escape(r.id)+'">'+ico("edit")+'</button><button type="button" title="Excluir" data-action="delete" data-section="'+section+'" data-id="'+escape(r.id)+'">'+ico("trash")+'</button>':"Somente leitura")+'</div></td></tr>').join("");}
 function listing(section){let states=[...new Set(data[section].map(r=>r.status).filter(Boolean))];return intro(names[section],descriptions[section],button("Exportar CSV","download","export-"+section)+renderModuleImporterButton(section,role)+(section==="incidentes"?renderSpreadsheetButton(role)+renderAccidentImportButton(role):"")+(canWrite()?button("Novo registro","plus","new-"+section,"btn-primary"):""))+banner()+'<article class="card table-card"><div class="table-toolbar"><div><h2>Registros cadastrados</h2><p class="subtitle">'+count(section)+' registro(s) no total</p></div><div class="table-actions"><label class="search-box">'+ico("search")+'<input id="table-search" autocomplete="off" placeholder="Buscar registros..." value="'+escape(search)+'"></label><select class="filter-select" id="table-filter"><option value="">Todos os status</option>'+states.map(s=>'<option value="'+escape(s)+'" '+(s===statusFilter?"selected":"")+'>'+escape(s)+'</option>').join("")+'</select></div></div><div class="table-scroll"><table class="data-table"><thead><tr>'+display[section].map(k=>'<th>'+escape(specs[section].find(s=>s[0]===k)?.[1]||(k==="partesCorpo"?"Regiões atingidas":k))+'</th>').join("")+'<th>Ações</th></tr></thead><tbody id="table-body">'+rows(section)+'</tbody></table></div><div class="empty-state" id="empty-filter" '+(rows(section)?"hidden":"")+'>'+ico("search")+'<strong>Nenhum resultado</strong><p>Altere os filtros ou crie um registro.</p></div></article>';}
@@ -98,7 +98,7 @@ function updateGate(){
  $("#auth-gate").hidden=ready;
  if(ready)return;
  const text={
-  loading:"Validando sua conta e carregando as informações do Firestore...",
+  loading:"Validando acesso e carregando os registros...",
   signed_out:"Faça login com uma conta Google autorizada pela TECHNET.",
   denied:accessError||"Esta conta ainda não possui autorização para utilizar o TECHNET SST.",
   error:accessError||"Ocorreu um erro ao carregar os dados. Tente novamente."
@@ -111,13 +111,13 @@ function updateGate(){
 }
 function header(){
  $("#environment-pill").className="environment-pill online";
- $("#environment-pill").innerHTML='<span class="pulse-dot"></span> Produção · Firebase';
- $("#footer-state").textContent="Produção · Cloud Firestore";
+ $("#environment-pill").innerHTML='<span class="pulse-dot"></span> Sessão ativa';
+ $("#footer-state").textContent="Registros disponíveis";
  $("#user-label").textContent=user?.displayName||user?.email||"Usuário";
  $("#user-description").textContent="Perfil: "+role;
  $("#avatar").textContent=(user?.displayName||user?.email||"T")[0].toUpperCase();
  $("#signout").hidden=!user;
- $("#auth-message").textContent="Sessão autenticada. Os dados são carregados do Firebase de acordo com seu perfil de acesso.";
+ $("#auth-message").textContent="Sessão autenticada. As permissões seguem o perfil da sua conta.";
 }
 function render(){
  updateGate();
@@ -174,7 +174,7 @@ async function save(event){
   else await addDoc(collection(db,section),entry);
   await refresh();
   $("#record-dialog").close();
-  toast("Registro salvo no Firestore.");
+  toast("Registro salvo com sucesso.");
  }catch(err){
   console.error("Falha ao salvar",err);
   toast("Não foi possível salvar ou atualizar a tela. Verifique sua conexão e as permissões.",true);
@@ -187,7 +187,7 @@ async function remove(section,id){
  try{
   await deleteDoc(doc(db,section,id));
   await refresh();
-  toast("Registro excluído do Firestore.");
+  toast("Registro excluído com sucesso.");
  }catch(err){
   console.error("Falha ao excluir",err);
   toast("Não foi possível excluir ou atualizar os dados.",true);
@@ -205,9 +205,9 @@ async function login(){
  }catch(err){
   console.error("Falha de autenticação",err);
   const messages={
-   "auth/operation-not-allowed":"O provedor Google não está habilitado no Firebase Authentication.",
+   "auth/operation-not-allowed":"Login indisponível. Contate o administrador do sistema.",
    "auth/popup-blocked":"O navegador bloqueou a janela do Google. Permita pop-ups.",
-   "auth/unauthorized-domain":"O domínio deste site não está autorizado no Firebase.",
+   "auth/unauthorized-domain":"Este endereço não está autorizado para acesso. Contate o administrador.",
    "auth/popup-closed-by-user":"Login cancelado."
   };
   const message=messages[err.code]||"Não foi possível autenticar com o Google. Verifique a conta e tente novamente.";
@@ -273,7 +273,7 @@ async function bootstrap(currentUser){
   clearLibrary();
   accessError=err.message?.startsWith("Acesso não autorizado")||err.message?.startsWith("A conta Google")
    ?err.message
-   :"Não foi possível carregar os dados do Firebase. Confira sua conexão e tente novamente.";
+   :"Não foi possível carregar os registros. Confira sua conexão e tente novamente.";
   mode=accessError.startsWith("Não foi possível")?"error":"denied";
   render();
  }
@@ -283,7 +283,7 @@ onAuthStateChanged(auth,bootstrap,err=>{
  ++sessionVersion;
  user=null;role="leitura";mode="error";
  data=emptyData();clearLibrary();clearPgrIndicators();clearSignatureSessions();resetUserAdmin();
- accessError="Falha ao validar a sessão do Firebase. Tente recarregar a página.";
+ accessError="Não foi possível validar a sessão. Atualize a página e tente novamente.";
  render();
 });
 
