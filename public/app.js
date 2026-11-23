@@ -305,6 +305,27 @@ $("#gate-switch").addEventListener("click",login);
 $("#gate-retry").addEventListener("click",()=>bootstrap(auth.currentUser));
 $("#menu-toggle").addEventListener("click",()=>{$("#sidebar").classList.add("open");$("#overlay").hidden=false;});
 $("#overlay").addEventListener("click",()=>{$("#sidebar").classList.remove("open");$("#overlay").hidden=true;});
-$("#theme-toggle").addEventListener("click",()=>{let dark=document.body.classList.toggle("dark");localStorage.setItem("technet-sst-theme",dark?"dark":"light");$("#theme-toggle").innerHTML=ico(dark?"sun":"moon");});
-if(localStorage.getItem("technet-sst-theme")==="dark"){document.body.classList.add("dark");$("#theme-toggle").innerHTML=ico("sun");}
+const THEME_KEY="technet-sst-theme";
+function syncThemeUi(){
+ const dark=document.body.classList.contains("dark");
+ const toggle=$("#theme-toggle");
+ const label=dark?"Ativar tema claro":"Ativar tema escuro";
+ toggle.innerHTML=ico(dark?"sun":"moon");
+ toggle.setAttribute("aria-label",label);
+ toggle.setAttribute("title",label);
+ toggle.setAttribute("aria-pressed",String(dark));
+ const themeMeta=document.querySelector('meta[name="theme-color"]');
+ if(themeMeta)themeMeta.content=dark?"#0B0E12":"#F3F6F8";
+ document.documentElement.style.colorScheme=dark?"dark":"light";
+}
+$("#theme-toggle").addEventListener("click",()=>{
+ const dark=document.body.classList.toggle("dark");
+ try{localStorage.setItem(THEME_KEY,dark?"dark":"light");}catch(e){}
+ syncThemeUi();
+});
+try{
+ if(localStorage.getItem(THEME_KEY)==="dark")document.body.classList.add("dark");
+ else document.body.classList.remove("dark");
+}catch(e){}
+syncThemeUi();
 render();
