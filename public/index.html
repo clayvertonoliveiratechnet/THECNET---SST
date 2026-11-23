@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#101419"/>
+  <meta name="theme-color" content="#F3F6F8"/>
   <meta name="description" content="TECHNET SST — Gestão de Segurança e Saúde do Trabalho para equipes de telecomunicações"/>
   <title>TECHNET | Sistema de SST</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
   <link rel="stylesheet" href="styles.css?v=20261110-importador-todas-abas"/>
   <link rel="stylesheet" href="brand.css?v=20261110-identidade-oficial"/>
   <link rel="stylesheet" href="technet-ui.css?v=20261110-themely-v3"/>
+  <link rel="stylesheet" href="theme-fix.css?v=20261123-light-dark"/>
 </head>
 <body>
+  <script>try{if(localStorage.getItem("technet-sst-theme")==="dark")document.body.classList.add("dark");}catch(e){}</script>
   <section id="auth-gate" class="auth-gate" aria-live="polite">
     <div class="gate-layout">
       <div class="gate-card">
-      <div class="gate-brand"><img class="gate-brand-logo" src="brand/logo-ui-dark.svg" alt="technet"/><span class="gate-brand-system">PLATAFORMA DE SAÚDE E SEGURANÇA DO TRABALHO</span></div>
+      <div class="gate-brand"><img class="gate-brand-logo logo-theme-dark" src="brand/logo-ui-dark.svg" alt="technet"/><img class="gate-brand-logo logo-theme-light" src="brand/logo-horizontal.svg" alt="technet"/><span class="gate-brand-system">PLATAFORMA DE SAÚDE E SEGURANÇA DO TRABALHO</span></div>
       <div class="gate-indicator"><span></span> PORTAL CORPORATIVO</div>
       <h1>Acessar sua conta</h1>
       <p class="gate-description">Entre com sua conta corporativa para acessar registros, inspeções e documentos de SST.</p>
@@ -31,7 +33,7 @@
   <div id="app" class="app-shell" hidden>
     <aside class="sidebar" id="sidebar">
       <a class="brand" href="#" data-route="dashboard" aria-label="TECHNET SST — início">
-        <img class="brand-logo-horizontal" src="brand/logo-ui-dark.svg" alt="technet"/><span class="brand-subtitle">GESTÃO DE SAÚDE E SEGURANÇA DO TRABALHO</span>
+        <img class="brand-logo-horizontal logo-theme-dark" src="brand/logo-ui-dark.svg" alt="technet"/><img class="brand-logo-horizontal logo-theme-light" src="brand/logo-horizontal.svg" alt="technet"/><span class="brand-subtitle">GESTÃO DE SAÚDE E SEGURANÇA DO TRABALHO</span>
       </a>
       <div class="sidebar-context"><span class="sidebar-context-label">AMBIENTE OPERACIONAL</span><strong>Gestão de SST</strong></div>
       <div class="nav-caption">OPERAÇÕES</div>
@@ -60,7 +62,7 @@
     <div class="main-column">
       <header class="topbar">
         <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-toggle" aria-label="Abrir menu"><span data-icon="menu"></span></button><span class="breadcrumb"><span class="breadcrumb-mark"></span> TECHNET · SST</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-current">Visão geral</span></div>
-        <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Verificando acesso</span><button class="icon-button" title="Alternar contraste" aria-label="Alternar contraste" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button></div>
+        <div class="topbar-right"><span class="environment-pill" id="environment-pill"><span class="pulse-dot"></span> Verificando acesso</span><button class="icon-button" title="Ativar tema escuro" aria-label="Ativar tema escuro" aria-pressed="false" id="theme-toggle"><span data-icon="moon"></span></button><button class="icon-button" title="Configurações de acesso" id="login-button"><span data-icon="user-round"></span></button></div>
       </header>
       <main class="content" id="content"><div class="loading-panel">Carregando TECHNET SST…</div></main>
       <footer class="footer"><span>TECHNET · Gestão de SST</span><span id="footer-state">Ambiente seguro</span></footer>
